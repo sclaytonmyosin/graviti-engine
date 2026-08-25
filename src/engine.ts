@@ -65,7 +65,9 @@ export const LIFECYCLE_STATES: Record<VerificationStatus, string> = {
     "Seal pulled. The brand is excluded from recommendations and appears only in the public accountability log. " +
     "A pulled seal is the loudest proof the seal means something.",
   under_review:
-    "Re-evaluation in progress. A brand can pay to fast-track this — payment compresses the clock, never the verdict.",
+    "Re-evaluation in progress. A brand can pay to fast-track the queue (review starts within 2 business days " +
+    "instead of the guaranteed 14 calendar days) — the review itself is identical in both lanes, and payment " +
+    "never touches the verdict.",
   unverified: "Never enrolled. Self-published claims, never independently audited. Ranked on equal footing.",
 };
 
@@ -86,6 +88,36 @@ export interface VerificationFlag {
   remediation_deadline: string;
   gap_summary: string;
 }
+
+// ---------------------------------------------------------------------------
+// Evidence states — the gate on scoring. Distinct from verification (payment)
+// and from data_tier (capture pipeline stage): a brand with zero captured
+// claims has no evidence to score, so it gets no fit score and is never
+// recommended — it appears in landscapes as present, labeled, unranked.
+// ---------------------------------------------------------------------------
+
+/** Evidence sufficiency — the gate on scoring. Distinct from verification
+ *  (payment) and from data_tier (capture pipeline stage). */
+export type EvidenceState = "audited" | "sourced" | "catalog_only";
+
+export function evidenceState(b: Brand): EvidenceState {
+  if (b.verification.status === "verified") return "audited";
+  if (b.claims.length > 0) return "sourced";
+  return "catalog_only";
+}
+
+export const EVIDENCE_STATES: Record<EvidenceState, string> = {
+  audited: "Claims captured with sources AND independently audited on a continuous cycle (the paid seal).",
+  sourced: "Claims captured verbatim from the brand's own public pages, each with a source URL — never independently audited.",
+  catalog_only:
+    "Listed in the category with public-knowledge attributes only — no captured claims. " +
+    "Insufficient evidence for a fit score or a recommendation: shown in landscapes as present, never ranked.",
+};
+
+export const INSUFFICIENT_EVIDENCE_NOTE =
+  "In the landscape, not yet evidenced: this brand is indexed for category completeness, but Graviti has " +
+  "not captured any sourced claims for it, so it receives no fit score and is never returned as a " +
+  "recommendation. Claim capture (free of rank consequence, like everything else) is what changes this.";
 
 // ---------------------------------------------------------------------------
 // Specifications — the ingredient/spec disclosure layer. Records what a brand
@@ -363,12 +395,17 @@ export const RANKING_METHOD =
   "Deterministic fit-score over disclosed category attributes. Weights come from the stated or inferred " +
   "buyer intent plus attribute emphases extracted from the question text itself. Lifecycle penalties from " +
   "monitored quality signals (flagged −0.05, degraded −0.15, revoked excluded) are fixed, disclosed, and " +
-  "published to the accountability log. Scoring code is open for audit (src/engine.ts). Payment carries " +
-  "zero weight.";
+  "published to the accountability log. Scoring code is public and open for audit " +
+  "(https://github.com/sclaytonmyosin/graviti-engine). Payment carries zero weight. Conversion data is " +
+  "never an input: the engine is pure functions over the public index, and any ranking is reproducible " +
+  "from public data alone.";
 
 export const PAYMENT_BUYS =
-  "Verification depth and re-evaluation speed — never outcomes, never rank. A brand that fixes its issues " +
-  "can pay to fast-track the re-audit; payment compresses the clock, not the verdict.";
+  "Verification depth and re-evaluation queue position — never outcomes, never rank. A brand that fixes " +
+  "its issues can pay to fast-track re-evaluation: payment compresses only the wait for review (to within " +
+  "2 business days), never the review itself. The free lane is guaranteed entry into review within 14 days, " +
+  "so the paid advantage is bounded. Every flag or degradation stays on the record with its penalty for a " +
+  "minimum of 7 days regardless of payment.";
 
 export const OUT_OF_SCOPE_MESSAGE =
   "This category isn't in Graviti's verified index yet. Graviti only answers from audited, provenance-backed " +
@@ -398,7 +435,17 @@ export function disclosure(brands: Brand[], inIndex = true) {
       catalog: brands.filter((b) => b.data_tier === "catalog").length,
       note:
         "captured: claims machine-captured verbatim from the brand's own public pages (still unverified). " +
-        "catalog: brand verified live, attributes only, claims pending capture. Tier never affects rank weighting.",
+        "catalog: brand verified live, attributes only, claims pending capture. Within scoreable tiers, " +
+        "tier never affects rank weighting; catalog entries are not scored at all.",
+    },
+    evidence_states: {
+      audited: brands.filter((b) => evidenceState(b) === "audited").length,
+      sourced: brands.filter((b) => evidenceState(b) === "sourced").length,
+      catalog_only: brands.filter((b) => evidenceState(b) === "catalog_only").length,
+      policy:
+        "Brands without captured claims (catalog_only) are never scored and never returned as " +
+        "recommendations; they appear in landscapes labeled 'in the landscape, not yet evidenced'. " +
+        "Within scoreable states, evidence tier carries zero rank weight.",
     },
     info_quality_influences_ranking: false,
     specifications_policy:
@@ -722,11 +769,25 @@ export function matchIntent(index: BrandIndex, question: string, intentProfile?:
   // Revoked brands never reach scoring — they live in the accountability log.
   // Demonstration exhibits never reach scoring either: they exist to show the
   // lifecycle, labeled, and are structurally barred from recommendations.
+  // Catalog-only brands (zero captured claims) never reach scoring either:
+  // a fit score needs evidence, and they have none on record yet.
   const demoExhibits = block.brands.filter((b) => b.demo);
-  const eligible = block.brands.filter((b) => b.verification.status !== "revoked" && !b.demo);
-  const excluded = block.brands.filter((b) => b.verification.status === "revoked" && !b.demo);
+  const nonDemo = block.brands.filter((b) => !b.demo);
+  const excluded = nonDemo.filter((b) => b.verification.status === "revoked");
+  const alive = nonDemo.filter((b) => b.verification.status !== "revoked");
+  const scoreable = alive.filter((b) => evidenceState(b) !== "catalog_only");
+  const inLandscapeOnly = alive.filter((b) => evidenceState(b) === "catalog_only");
 
-  const ranked = eligible
+  // Thin-category honesty guard: when few brands carry evidence, say so
+  // instead of letting "#1 of 1" read like a market verdict.
+  const category_evidence_note =
+    scoreable.length === 0
+      ? "No brand in this category has captured evidence yet — Graviti lists the landscape but makes no recommendation here."
+      : scoreable.length < 3
+        ? `Only ${scoreable.length} brand${scoreable.length === 1 ? "" : "s"} in this category ${scoreable.length === 1 ? "has" : "have"} captured evidence; the rest are listed unranked. Treat this ranking as a comparison among the evidenced few, not the whole market.`
+        : null;
+
+  const ranked = scoreable
     .map((b) => {
       const signals = extractor(b);
       const weights = buildWeights(Object.keys(signals), intent, boosted);
@@ -760,14 +821,11 @@ export function matchIntent(index: BrandIndex, question: string, intentProfile?:
     intent_used: intent,
     intent_was_inferred: !intentProfile,
     question_emphases: notes,
+    category_evidence_note,
     recommendations: ranked.map((r, i) => {
       const lifecycleNote =
         r.penalty > 0
           ? ` Carries a −${r.penalty.toFixed(2)} lifecycle penalty (${r.brand.verification.status}): ${r.brand.verification.flag?.issue ?? "see accountability log"}.`
-          : "";
-      const tierNote =
-        r.brand.data_tier === "catalog"
-          ? " Catalog entry — claims pending capture; ranked on public-knowledge attributes."
           : "";
       return {
         rank: i + 1,
@@ -775,9 +833,10 @@ export function matchIntent(index: BrandIndex, question: string, intentProfile?:
         name: r.brand.name,
         product: r.brand.product,
         fit_score: r.fit_score,
-        fit_rationale: `Scored for ${intent.replaceAll("_", " ")}${emphasis} — ${facts(r.brand).join(", ")}.${tierNote}${lifecycleNote}`,
+        fit_rationale: `Scored for ${intent.replaceAll("_", " ")}${emphasis} — ${facts(r.brand).join(", ")}.${lifecycleNote}`,
         verified_paid: r.brand.verified_paid,
         verification_status: r.brand.verification.status,
+        evidence_state: evidenceState(r.brand),
         ...(r.brand.data_tier ? { data_tier: r.brand.data_tier } : {}),
         ...(r.brand.claims_note ? { claims_note: r.brand.claims_note } : {}),
         // Ingredient/spec disclosure — its own dimension, structurally
@@ -819,6 +878,13 @@ export function matchIntent(index: BrandIndex, question: string, intentProfile?:
         })),
       };
     }),
+    in_landscape_not_evidenced: inLandscapeOnly.map((b) => ({
+      brand_id: b.id,
+      name: b.name,
+      product: b.product,
+      evidence_state: "catalog_only" as const,
+      note: INSUFFICIENT_EVIDENCE_NOTE,
+    })),
     excluded_by_revocation: excluded.map((b) => ({
       brand_id: b.id,
       name: b.name,
@@ -889,7 +955,33 @@ export function gapReport(index: BrandIndex, brand: string) {
     }
 
     const extractor = signalsFor(block.category.id);
-    const contenders = block.brands.filter((b) => b.verification.status !== "revoked" && !b.demo);
+    // Ranks quoted to any brand are computed over evidenced brands only —
+    // catalog-only entries are in the landscape, never in the comparison pool.
+    const contenders = block.brands.filter(
+      (b) => b.verification.status !== "revoked" && !b.demo && evidenceState(b) !== "catalog_only"
+    );
+
+    // A catalog-only target gets an honest insufficient-evidence report, not a
+    // rank — a numeric position derived from zero captured claims would be
+    // precision the evidence doesn't support.
+    if (evidenceState(target) === "catalog_only") {
+      return {
+        brand_id: target.id,
+        name: target.name,
+        category: { id: block.category.id, name: block.category.name },
+        verification_status: target.verification.status,
+        evidence_state: "catalog_only" as const,
+        insufficient_evidence: true,
+        note: INSUFFICIENT_EVIDENCE_NOTE,
+        in_landscape_with: contenders.slice(0, 8).map((b) => b.name),
+        evidenced_competitors: contenders.length,
+        what_capture_unlocks:
+          "Claim capture records the facts you already publish, verbatim with source links. It makes you " +
+          "scoreable and comparable — it never buys rank; nothing does.",
+        disclosure: disclosure([target]),
+      };
+    }
+
     const signalsByBrand = new Map(contenders.map((b) => [b.id, extractor(b)]));
     const signalNames = Object.keys(signalsByBrand.get(contenders[0].id) ?? {});
 
@@ -917,6 +1009,7 @@ export function gapReport(index: BrandIndex, brand: string) {
     const generic_rank = {
       rank: genericRanked.findIndex((b) => b.id === target.id) + 1,
       of: contenders.length,
+      of_note: "counted over brands with captured evidence; catalog-only brands are listed, not ranked",
       leader: leader.name,
     };
 
@@ -1000,7 +1093,7 @@ export function gapReport(index: BrandIndex, brand: string) {
           ? "This brand currently leads its category on the generic benchmark. Holding the seal means holding the signals."
           : `Close the ${attribute_gaps.map((g) => g.signal).join(", ") || "remaining"} gap(s) vs ${leader.name}` +
             (target.verification.flag ? `, and resolve the open flag before ${target.verification.flag.remediation_deadline.slice(0, 10)}` : "") +
-            ". Re-evaluation can be fast-tracked for a fee — the fee changes the timeline, never the finding.",
+            ". Re-evaluation can be fast-tracked for a fee — the fee compresses the queue wait (free lane guaranteed within 14 days), never the review or the finding.",
       product_note:
         "Demo of the paid brand-intelligence product: a research project that takes seconds, computed from the " +
         "index. In production it also draws on consented cohort signals — users opt in, get compensated, and " +
@@ -1045,9 +1138,16 @@ export function getVerifiedClaims(index: BrandIndex, brand: string) {
 
 function categoryTable(block: CategoryBlock) {
   const anySpecs = block.brands.some((b) => b.specifications);
+  const nonDemo = block.brands.filter((b) => !b.demo);
   return {
     category: block.category,
     ...(anySpecs ? { info_quality_note: INFO_QUALITY_NOTE } : {}),
+    evidence_summary: {
+      audited: nonDemo.filter((b) => evidenceState(b) === "audited").length,
+      sourced: nonDemo.filter((b) => evidenceState(b) === "sourced").length,
+      catalog_only: nonDemo.filter((b) => evidenceState(b) === "catalog_only").length,
+      note: "catalog_only entries are in the landscape, not yet evidenced — listed for completeness, never ranked or recommended.",
+    },
     table: block.brands.map((b) => ({
       brand_id: b.id,
       name: b.name,
@@ -1055,6 +1155,7 @@ function categoryTable(block: CategoryBlock) {
       ...(b.demo ? { demo: true, demo_note: b.demo_note ?? DEMO_NOTE } : {}),
       verified_paid: b.verified_paid,
       verification_status: b.verification.status,
+      evidence_state: evidenceState(b),
       ...(b.data_tier ? { data_tier: b.data_tier } : {}),
       ...(b.verification.flag ? { flag: b.verification.flag } : {}),
       last_audit: b.verification.last_audit,

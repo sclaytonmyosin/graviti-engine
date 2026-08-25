@@ -79,6 +79,16 @@ if (result.excluded_by_revocation.length > 0) {
 if (result.demonstration_exhibits.length > 0) {
   console.log(`Demonstration exhibits (labeled, never ranked): ${result.demonstration_exhibits.map((b) => b.name).join(", ")}`);
 }
+if (result.in_landscape_not_evidenced.length > 0) {
+  console.log(
+    `In the landscape, not yet evidenced (no captured claims — never scored, never recommended): ${result.in_landscape_not_evidenced
+      .map((b) => b.name)
+      .join(", ")}`
+  );
+}
+if (result.category_evidence_note) {
+  console.log(`Note: ${result.category_evidence_note}`);
+}
 
 const d = result.disclosure;
 console.log("\nDisclosure (carried on every payload):");

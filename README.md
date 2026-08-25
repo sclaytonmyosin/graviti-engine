@@ -44,7 +44,7 @@ The script needs no secrets and no Graviti-run infrastructure: it recomputes eve
 
 ## Sync provenance
 
-`src/engine.ts`, `scripts/verify-ledger.mjs` (modulo the live-fetch adaptation noted in its header), `data/ledger.json`, and `data/public-key.pem` mirror the private Graviti monorepo at commit `6282b4b` (2026-08-25). The engine file is verbatim — re-syncing is a file copy plus an update to this line. Scoring changes land here in the same change that ships them to production; an evidence-states gate is the next scheduled engine change.
+`src/engine.ts`, `scripts/verify-ledger.mjs` (modulo the live-fetch adaptation noted in its header), `data/ledger.json`, and `data/public-key.pem` mirror the private Graviti monorepo at commit `b36f58f` (2026-08-25). The engine file is verbatim — re-syncing is a file copy plus an update to this line. Scoring changes land here in the same change that ships them to production; this sync carries the evidence-states gate (`evidenceState()`): brands with zero captured claims are listed in landscapes as "not yet evidenced" but are never scored and never recommended — run the demo to see both behaviors.
 
 ## Layout
 

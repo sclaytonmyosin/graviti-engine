@@ -1527,11 +1527,13 @@
       "signing_key": "ed25519:MCowBQYDK2VwAyEAPYznSNiELA8x6Eym7rk50GExv63QJeupB9uQQCOh7Ck=",
       "anchor": {
         "method": "opentimestamps",
-        "status": "pending",
-        "note": "Submitted to public OTS calendars; Bitcoin attestation finalizes within hours. Until upgraded, the proof commits to calendar signatures only.",
+        "status": "anchored",
+        "note": "Anchored in Bitcoin block 963966. Verify with: ots verify (see /ledger).",
         "proof": "/ots/v18.ots",
         "stamped_file_content": "the entry_hash hex string, no trailing newline",
-        "submitted_at": "2026-08-25T06:07:03.403Z"
+        "submitted_at": "2026-08-25T06:07:03.403Z",
+        "bitcoin_block": 963966,
+        "upgraded_at": "2026-08-25T12:24:50.003Z"
       }
     },
     {
@@ -1643,11 +1645,247 @@
       "signing_key": "ed25519:MCowBQYDK2VwAyEAPYznSNiELA8x6Eym7rk50GExv63QJeupB9uQQCOh7Ck=",
       "anchor": {
         "method": "opentimestamps",
-        "status": "pending",
-        "note": "Submitted to public OTS calendars; Bitcoin attestation finalizes within hours. Until upgraded, the proof commits to calendar signatures only.",
+        "status": "anchored",
+        "note": "Anchored in Bitcoin block 963984. Verify with: ots verify (see /ledger).",
         "proof": "/ots/v19.ots",
         "stamped_file_content": "the entry_hash hex string, no trailing newline",
-        "submitted_at": "2026-08-25T07:12:02.346Z"
+        "submitted_at": "2026-08-25T07:12:02.346Z",
+        "bitcoin_block": 963984,
+        "upgraded_at": "2026-08-25T12:24:51.655Z"
+      }
+    },
+    {
+      "version": 20,
+      "timestamp": "2026-08-25T12:24:46.732Z",
+      "index_sha256": "e7bda6d0b8313aa9bd126d04cd88620049276013b47be365a125f413587dbc72",
+      "prev_entry_hash": "a2b33d8c75af567412c51efc42a9136c1f5f01b1204d66871d52251b816191e1",
+      "annotation": "feedback & integrity pass: evidence-states gate live — catalog-tier brands (2336 of 3535) are listed in landscapes but never scored or recommended, captured/verified both labeled; Verification Standard published at /standard; honest demand counters on /pulse generated from logs; fast-track caps codified (free re-evaluation within 14 days, fast-track within 2 business days, 7-day dwell floor in flagged/degraded states that no payment shortens); adoption copy made capability-honest — index unchanged at 211 categories / 3535 brands / 2559 claims (evidence freshness re-checks only)",
+      "stats": {
+        "categories": 211,
+        "brands": 3535,
+        "claims": 2559,
+        "accountability_entries": 18
+      },
+      "accountability_log": [
+        {
+          "date": "2026-02-20T00:00:00Z",
+          "brand_id": "somnalux",
+          "to_status": "flagged"
+        },
+        {
+          "date": "2026-05-21T00:00:00Z",
+          "brand_id": "somnalux",
+          "to_status": "degraded"
+        },
+        {
+          "date": "2026-07-08T00:00:00Z",
+          "brand_id": "somnalux",
+          "to_status": "revoked"
+        },
+        {
+          "date": "2026-08-05T00:00:00Z",
+          "brand_id": "auralite-wellness",
+          "to_status": "flagged"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "bioptimizers",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "froya-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "froya-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "norse-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "norse-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T03:37:09.472Z",
+          "brand_id": "bioptimizers",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-25T06:05:37.109Z",
+          "brand_id": "mineralum",
+          "to_status": "unverified"
+        },
+        {
+          "date": "2026-08-25T06:05:37.109Z",
+          "brand_id": "zenmag",
+          "to_status": "unverified"
+        },
+        {
+          "date": "2026-08-25T06:05:37.109Z",
+          "brand_id": "glacier-forge",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-25T06:05:37.109Z",
+          "brand_id": "northcask",
+          "to_status": "unverified"
+        },
+        {
+          "date": "2026-08-25T06:05:37.109Z",
+          "brand_id": "polarpod",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-25T06:05:37.109Z",
+          "brand_id": "fjordline",
+          "to_status": "unverified"
+        },
+        {
+          "date": "2026-08-25T06:05:37.109Z",
+          "brand_id": "auralite-wellness",
+          "to_status": "flagged"
+        },
+        {
+          "date": "2026-08-25T06:05:37.109Z",
+          "brand_id": "somnalux",
+          "to_status": "revoked"
+        }
+      ],
+      "entry_hash": "680b0053ac02bfc9975dc0ae1d9e326174eb4843db8c879909ba10a8374b7379",
+      "signature": "W7SKnnT9WOiAqGZVUwxJeSbbFGajbL6A6hHtCn1p9eTX6kA4jv9qPnS2Yk0nkZu5Hny6ivsD7fNKi3VHBCIMDg==",
+      "signing_key": "ed25519:MCowBQYDK2VwAyEAPYznSNiELA8x6Eym7rk50GExv63QJeupB9uQQCOh7Ck=",
+      "anchor": {
+        "method": "opentimestamps",
+        "status": "anchored",
+        "note": "Anchored in Bitcoin block 964013. Verify with: ots verify (see /ledger).",
+        "proof": "/ots/v20.ots",
+        "stamped_file_content": "the entry_hash hex string, no trailing newline",
+        "submitted_at": "2026-08-25T12:24:48.273Z",
+        "bitcoin_block": 964013,
+        "upgraded_at": "2026-08-25T15:35:56.239Z"
+      }
+    },
+    {
+      "version": 21,
+      "timestamp": "2026-08-25T15:35:53.404Z",
+      "index_sha256": "7a256c4b849b100d21305c758765f7e89ae99fd99c114640f0f0b08baa68c236",
+      "prev_entry_hash": "680b0053ac02bfc9975dc0ae1d9e326174eb4843db8c879909ba10a8374b7379",
+      "annotation": "open-core release: the scoring engine is published for audit at github.com/sclaytonmyosin/graviti-engine (Apache-2.0), and every 'open to audit' claim now links the real repo — the RANKING_METHOD disclosure carried on every payload, plus Brands, Pricing, Thesis, Use Graviti, the Verification Standard, llms.txt, and the whitepaper; legal elections filled: Texas governing law and exclusive Texas venue, entity Singulariti, template markers removed, one counsel-review line kept per page; index content change is evidence freshness re-checks (2404 claims re-verified fresh, 0 confirmations opened) — index unchanged at 211 categories / 3535 brands / 2559 claims",
+      "stats": {
+        "categories": 211,
+        "brands": 3535,
+        "claims": 2559,
+        "accountability_entries": 18
+      },
+      "accountability_log": [
+        {
+          "date": "2026-02-20T00:00:00Z",
+          "brand_id": "somnalux",
+          "to_status": "flagged"
+        },
+        {
+          "date": "2026-05-21T00:00:00Z",
+          "brand_id": "somnalux",
+          "to_status": "degraded"
+        },
+        {
+          "date": "2026-07-08T00:00:00Z",
+          "brand_id": "somnalux",
+          "to_status": "revoked"
+        },
+        {
+          "date": "2026-08-05T00:00:00Z",
+          "brand_id": "auralite-wellness",
+          "to_status": "flagged"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "bioptimizers",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "froya-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "froya-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "norse-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "norse-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T03:37:09.472Z",
+          "brand_id": "bioptimizers",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-25T06:05:37.109Z",
+          "brand_id": "mineralum",
+          "to_status": "unverified"
+        },
+        {
+          "date": "2026-08-25T06:05:37.109Z",
+          "brand_id": "zenmag",
+          "to_status": "unverified"
+        },
+        {
+          "date": "2026-08-25T06:05:37.109Z",
+          "brand_id": "glacier-forge",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-25T06:05:37.109Z",
+          "brand_id": "northcask",
+          "to_status": "unverified"
+        },
+        {
+          "date": "2026-08-25T06:05:37.109Z",
+          "brand_id": "polarpod",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-25T06:05:37.109Z",
+          "brand_id": "fjordline",
+          "to_status": "unverified"
+        },
+        {
+          "date": "2026-08-25T06:05:37.109Z",
+          "brand_id": "auralite-wellness",
+          "to_status": "flagged"
+        },
+        {
+          "date": "2026-08-25T06:05:37.109Z",
+          "brand_id": "somnalux",
+          "to_status": "revoked"
+        }
+      ],
+      "entry_hash": "ad78af8142871a3dfc05cdbdc65a293f467f5ac385b8bf0aeb23de288d65d2bc",
+      "signature": "9S2AKB1GfqlFs0DTLzRsrOOYwYjusc5Bf4jaO/BeyUkW5PC+HBnuAxSwHLMxEhzE1U8dmEFr+YZZjKOHp/ysBg==",
+      "signing_key": "ed25519:MCowBQYDK2VwAyEAPYznSNiELA8x6Eym7rk50GExv63QJeupB9uQQCOh7Ck=",
+      "anchor": {
+        "method": "opentimestamps",
+        "status": "pending",
+        "note": "Submitted to public OTS calendars; Bitcoin attestation finalizes within hours. Until upgraded, the proof commits to calendar signatures only.",
+        "proof": "/ots/v21.ots",
+        "stamped_file_content": "the entry_hash hex string, no trailing newline",
+        "submitted_at": "2026-08-25T15:35:54.534Z"
       }
     }
   ]
