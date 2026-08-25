@@ -1,0 +1,1654 @@
+{
+  "description": "Graviti (formerly Cairn; renamed 2026-08) integrity ledger — append-only, hash-chained version history of the index. Entries before v7 reference the Cairn name and are preserved verbatim: same Ed25519 signing key, same chain. Each entry commits to the canonical index content hash and the previous entry's hash; entries are Ed25519-signed and anchored to Bitcoin via OpenTimestamps. Rewriting any historical entry breaks every hash after it.",
+  "canonicalization": "JSON with recursively sorted keys and no whitespace (reproduce with: jq -cjS)",
+  "index_hash_covers": "the object {accountability_log, categories} as served inside /index.json",
+  "entry_hash_covers": "all entry fields except entry_hash, signature, signing_key, and anchor",
+  "signature_scheme": "Ed25519 over the UTF-8 bytes of entry_hash; public key at /public-key.pem",
+  "entries": [
+    {
+      "version": 1,
+      "timestamp": "2026-08-22T20:01:49.626Z",
+      "index_sha256": "db1b40ebc89a92cc6651e967db5d08c8db4d922588da8c21e227d3e6e654d61c",
+      "prev_entry_hash": "genesis",
+      "stats": {
+        "categories": 5,
+        "brands": 21,
+        "claims": 45,
+        "accountability_entries": 7
+      },
+      "accountability_log": [
+        {
+          "date": "2026-02-20T00:00:00Z",
+          "brand_id": "somnalux",
+          "to_status": "flagged"
+        },
+        {
+          "date": "2026-03-02T00:00:00Z",
+          "brand_id": "polarpod",
+          "to_status": "flagged"
+        },
+        {
+          "date": "2026-04-12T00:00:00Z",
+          "brand_id": "polarpod",
+          "to_status": "under_review"
+        },
+        {
+          "date": "2026-04-20T00:00:00Z",
+          "brand_id": "polarpod",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-05-21T00:00:00Z",
+          "brand_id": "somnalux",
+          "to_status": "degraded"
+        },
+        {
+          "date": "2026-07-08T00:00:00Z",
+          "brand_id": "somnalux",
+          "to_status": "revoked"
+        },
+        {
+          "date": "2026-08-05T00:00:00Z",
+          "brand_id": "auralite-wellness",
+          "to_status": "flagged"
+        }
+      ],
+      "entry_hash": "915c95853631c11337a364c0816d6fccfd05ba2f5c49e400eedc1901ffdc1c7e",
+      "signature": "FVvTErB6w/FIk19uyst87Zo9zFN0ZYYBu8Dvy1M1r6/NyoUw3p1kgOPPF3XPO2/lgtJNtGx/+LnpPlGijVFpDA==",
+      "signing_key": "ed25519:MCowBQYDK2VwAyEAPYznSNiELA8x6Eym7rk50GExv63QJeupB9uQQCOh7Ck=",
+      "anchor": {
+        "method": "opentimestamps",
+        "status": "anchored",
+        "note": "Anchored in Bitcoin block 963641. Verify with: ots verify (see /ledger).",
+        "proof": "/ots/v1.ots",
+        "stamped_file_content": "the entry_hash hex string, no trailing newline",
+        "submitted_at": "2026-08-22T20:01:51.565Z",
+        "bitcoin_block": 963641,
+        "upgraded_at": "2026-08-24T01:18:02.410Z"
+      }
+    },
+    {
+      "version": 2,
+      "timestamp": "2026-08-22T20:15:18.426Z",
+      "index_sha256": "d60dcbfad92b21a7c0f9b38f9a648f75fac44852fc9597a85f4adeb507099bfb",
+      "prev_entry_hash": "915c95853631c11337a364c0816d6fccfd05ba2f5c49e400eedc1901ffdc1c7e",
+      "stats": {
+        "categories": 5,
+        "brands": 21,
+        "claims": 45,
+        "accountability_entries": 7
+      },
+      "accountability_log": [
+        {
+          "date": "2026-02-20T00:00:00Z",
+          "brand_id": "somnalux",
+          "to_status": "flagged"
+        },
+        {
+          "date": "2026-03-02T00:00:00Z",
+          "brand_id": "polarpod",
+          "to_status": "flagged"
+        },
+        {
+          "date": "2026-04-12T00:00:00Z",
+          "brand_id": "polarpod",
+          "to_status": "under_review"
+        },
+        {
+          "date": "2026-04-20T00:00:00Z",
+          "brand_id": "polarpod",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-05-21T00:00:00Z",
+          "brand_id": "somnalux",
+          "to_status": "degraded"
+        },
+        {
+          "date": "2026-07-08T00:00:00Z",
+          "brand_id": "somnalux",
+          "to_status": "revoked"
+        },
+        {
+          "date": "2026-08-05T00:00:00Z",
+          "brand_id": "auralite-wellness",
+          "to_status": "flagged"
+        }
+      ],
+      "entry_hash": "accc5ea480bcbf04dd710cc9a8c03ba7f8356e83c87e82a870f1972b993407d9",
+      "signature": "AKo+DPZlVvhKHu+oasDtg/vjeJuwVMhWEYfjmrNPhQKmZXaM298kvJ5svHYudvmqFWcX45j3+tN64aSBr4RMDw==",
+      "signing_key": "ed25519:MCowBQYDK2VwAyEAPYznSNiELA8x6Eym7rk50GExv63QJeupB9uQQCOh7Ck=",
+      "anchor": {
+        "method": "opentimestamps",
+        "status": "anchored",
+        "note": "Anchored in Bitcoin block 963641. Verify with: ots verify (see /ledger).",
+        "proof": "/ots/v2.ots",
+        "stamped_file_content": "the entry_hash hex string, no trailing newline",
+        "submitted_at": "2026-08-22T20:15:19.870Z",
+        "bitcoin_block": 963641,
+        "upgraded_at": "2026-08-24T01:18:04.199Z"
+      }
+    },
+    {
+      "version": 3,
+      "timestamp": "2026-08-22T22:28:06.022Z",
+      "index_sha256": "f2f71930e4639135b6e6e8edda063a39e7269b4e4037fa3de0216c0752293cf0",
+      "prev_entry_hash": "accc5ea480bcbf04dd710cc9a8c03ba7f8356e83c87e82a870f1972b993407d9",
+      "stats": {
+        "categories": 36,
+        "brands": 805,
+        "claims": 967,
+        "accountability_entries": 7
+      },
+      "accountability_log": [
+        {
+          "date": "2026-02-20T00:00:00Z",
+          "brand_id": "somnalux",
+          "to_status": "flagged"
+        },
+        {
+          "date": "2026-03-02T00:00:00Z",
+          "brand_id": "polarpod",
+          "to_status": "flagged"
+        },
+        {
+          "date": "2026-04-12T00:00:00Z",
+          "brand_id": "polarpod",
+          "to_status": "under_review"
+        },
+        {
+          "date": "2026-04-20T00:00:00Z",
+          "brand_id": "polarpod",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-05-21T00:00:00Z",
+          "brand_id": "somnalux",
+          "to_status": "degraded"
+        },
+        {
+          "date": "2026-07-08T00:00:00Z",
+          "brand_id": "somnalux",
+          "to_status": "revoked"
+        },
+        {
+          "date": "2026-08-05T00:00:00Z",
+          "brand_id": "auralite-wellness",
+          "to_status": "flagged"
+        }
+      ],
+      "entry_hash": "9ed920610088afc25b79d73db2fd4c5c82bcb6059fc1f43d4f51d2a424673426",
+      "signature": "mF9RvAZyhGxIOWkQ4e86zKvhJhJaZVcBKrJCQaaOTxZACp1cWzItRs0NFVYHKCi0i3HjUgcQGLaD7wL3V8UuDg==",
+      "signing_key": "ed25519:MCowBQYDK2VwAyEAPYznSNiELA8x6Eym7rk50GExv63QJeupB9uQQCOh7Ck=",
+      "anchor": {
+        "method": "opentimestamps",
+        "status": "anchored",
+        "note": "Anchored in Bitcoin block 963641. Verify with: ots verify (see /ledger).",
+        "proof": "/ots/v3.ots",
+        "stamped_file_content": "the entry_hash hex string, no trailing newline",
+        "submitted_at": "2026-08-22T22:28:07.621Z",
+        "bitcoin_block": 963641,
+        "upgraded_at": "2026-08-24T01:18:06.271Z"
+      }
+    },
+    {
+      "version": 4,
+      "timestamp": "2026-08-24T01:17:59.010Z",
+      "index_sha256": "e20d03de966168a0865ff8f23184feb08645b9334b22b6d5f633d2e6c38782d9",
+      "prev_entry_hash": "9ed920610088afc25b79d73db2fd4c5c82bcb6059fc1f43d4f51d2a424673426",
+      "stats": {
+        "categories": 36,
+        "brands": 805,
+        "claims": 967,
+        "accountability_entries": 7
+      },
+      "accountability_log": [
+        {
+          "date": "2026-02-20T00:00:00Z",
+          "brand_id": "somnalux",
+          "to_status": "flagged"
+        },
+        {
+          "date": "2026-03-02T00:00:00Z",
+          "brand_id": "polarpod",
+          "to_status": "flagged"
+        },
+        {
+          "date": "2026-04-12T00:00:00Z",
+          "brand_id": "polarpod",
+          "to_status": "under_review"
+        },
+        {
+          "date": "2026-04-20T00:00:00Z",
+          "brand_id": "polarpod",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-05-21T00:00:00Z",
+          "brand_id": "somnalux",
+          "to_status": "degraded"
+        },
+        {
+          "date": "2026-07-08T00:00:00Z",
+          "brand_id": "somnalux",
+          "to_status": "revoked"
+        },
+        {
+          "date": "2026-08-05T00:00:00Z",
+          "brand_id": "auralite-wellness",
+          "to_status": "flagged"
+        }
+      ],
+      "entry_hash": "405f698b44656c09255d0b09c4ab0e6d481ea6960e80916a255603dfea3374b6",
+      "signature": "/sPEnWMcbXxKPCJw6OlyQAALvcFC0LSBuz8CHiS9NqYHlB7zVe2XS+T+KqSlt//PmtZhzcWjzWL8nrnk2qNmBA==",
+      "signing_key": "ed25519:MCowBQYDK2VwAyEAPYznSNiELA8x6Eym7rk50GExv63QJeupB9uQQCOh7Ck=",
+      "anchor": {
+        "method": "opentimestamps",
+        "status": "anchored",
+        "note": "Anchored in Bitcoin block 963794. Verify with: ots verify (see /ledger).",
+        "proof": "/ots/v4.ots",
+        "stamped_file_content": "the entry_hash hex string, no trailing newline",
+        "submitted_at": "2026-08-24T01:18:00.597Z",
+        "bitcoin_block": 963794,
+        "upgraded_at": "2026-08-24T03:06:13.893Z"
+      }
+    },
+    {
+      "version": 5,
+      "timestamp": "2026-08-24T02:45:35.321Z",
+      "index_sha256": "f703fc198379107f81f83cdc1518a448f3fd9ac2d770996076ddf26da72b80dc",
+      "prev_entry_hash": "405f698b44656c09255d0b09c4ab0e6d481ea6960e80916a255603dfea3374b6",
+      "stats": {
+        "categories": 36,
+        "brands": 805,
+        "claims": 967,
+        "accountability_entries": 7
+      },
+      "accountability_log": [
+        {
+          "date": "2026-02-20T00:00:00Z",
+          "brand_id": "somnalux",
+          "to_status": "flagged"
+        },
+        {
+          "date": "2026-03-02T00:00:00Z",
+          "brand_id": "polarpod",
+          "to_status": "flagged"
+        },
+        {
+          "date": "2026-04-12T00:00:00Z",
+          "brand_id": "polarpod",
+          "to_status": "under_review"
+        },
+        {
+          "date": "2026-04-20T00:00:00Z",
+          "brand_id": "polarpod",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-05-21T00:00:00Z",
+          "brand_id": "somnalux",
+          "to_status": "degraded"
+        },
+        {
+          "date": "2026-07-08T00:00:00Z",
+          "brand_id": "somnalux",
+          "to_status": "revoked"
+        },
+        {
+          "date": "2026-08-05T00:00:00Z",
+          "brand_id": "auralite-wellness",
+          "to_status": "flagged"
+        }
+      ],
+      "entry_hash": "3759947cdabc7fd574c6a89a7ef4df876e7533ec1176057cdc561e94f7dcac77",
+      "signature": "bvPDd6oO+dp/Xo9jg//o/q2Asj0A04PdZgAm2uo5P/mZeaaOkwfdD11KgeUUJ+I2Y8sx6DwoGXZYwRt7fGMJBg==",
+      "signing_key": "ed25519:MCowBQYDK2VwAyEAPYznSNiELA8x6Eym7rk50GExv63QJeupB9uQQCOh7Ck=",
+      "anchor": {
+        "method": "opentimestamps",
+        "status": "anchored",
+        "note": "Anchored in Bitcoin block 963803. Verify with: ots verify (see /ledger).",
+        "proof": "/ots/v5.ots",
+        "stamped_file_content": "the entry_hash hex string, no trailing newline",
+        "submitted_at": "2026-08-24T02:45:37.022Z",
+        "bitcoin_block": 963803,
+        "upgraded_at": "2026-08-24T15:18:55.449Z"
+      }
+    },
+    {
+      "version": 6,
+      "timestamp": "2026-08-24T03:06:10.985Z",
+      "index_sha256": "8fd80a81fbd4dc4b8d1b521e78909e81c5a67f3cb2511b57de9347fd9d8a743d",
+      "prev_entry_hash": "3759947cdabc7fd574c6a89a7ef4df876e7533ec1176057cdc561e94f7dcac77",
+      "stats": {
+        "categories": 36,
+        "brands": 805,
+        "claims": 970,
+        "accountability_entries": 12
+      },
+      "accountability_log": [
+        {
+          "date": "2026-02-20T00:00:00Z",
+          "brand_id": "somnalux",
+          "to_status": "flagged"
+        },
+        {
+          "date": "2026-03-02T00:00:00Z",
+          "brand_id": "polarpod",
+          "to_status": "flagged"
+        },
+        {
+          "date": "2026-04-12T00:00:00Z",
+          "brand_id": "polarpod",
+          "to_status": "under_review"
+        },
+        {
+          "date": "2026-04-20T00:00:00Z",
+          "brand_id": "polarpod",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-05-21T00:00:00Z",
+          "brand_id": "somnalux",
+          "to_status": "degraded"
+        },
+        {
+          "date": "2026-07-08T00:00:00Z",
+          "brand_id": "somnalux",
+          "to_status": "revoked"
+        },
+        {
+          "date": "2026-08-05T00:00:00Z",
+          "brand_id": "auralite-wellness",
+          "to_status": "flagged"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "bioptimizers",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "froya-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "froya-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "norse-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "norse-organics",
+          "to_status": "verified"
+        }
+      ],
+      "entry_hash": "d8498f6480633d0902a003bf345ab50674bd3bfaebf222cc7b144278f2000aec",
+      "signature": "xOD/iBCl54ncNG+lBgxRGMBk7ESeACQ2iCaJo5i9f99qyL88HKssjc45ejdjTGvXvwDCS6LJ3ytRAdiwerWADA==",
+      "signing_key": "ed25519:MCowBQYDK2VwAyEAPYznSNiELA8x6Eym7rk50GExv63QJeupB9uQQCOh7Ck=",
+      "anchor": {
+        "method": "opentimestamps",
+        "status": "anchored",
+        "note": "Anchored in Bitcoin block 963803. Verify with: ots verify (see /ledger).",
+        "proof": "/ots/v6.ots",
+        "stamped_file_content": "the entry_hash hex string, no trailing newline",
+        "submitted_at": "2026-08-24T03:06:12.251Z",
+        "bitcoin_block": 963803,
+        "upgraded_at": "2026-08-24T15:18:57.106Z"
+      }
+    },
+    {
+      "version": 7,
+      "timestamp": "2026-08-24T03:26:28.544Z",
+      "index_sha256": "db51b507b89f96383d1ccc61bc85e64a0729191c46b5b2e47c73fce34dd48c96",
+      "prev_entry_hash": "d8498f6480633d0902a003bf345ab50674bd3bfaebf222cc7b144278f2000aec",
+      "annotation": "Product renamed Cairn → Graviti (2026-08-24). Same operator, same Ed25519 signing key, same chain; entries v1–v6 reference the Cairn name and are preserved verbatim. This release also adds the fine-jewelry and demi-fine-jewelry categories (37 brands, 52 claims).",
+      "stats": {
+        "categories": 38,
+        "brands": 842,
+        "claims": 1022,
+        "accountability_entries": 12
+      },
+      "accountability_log": [
+        {
+          "date": "2026-02-20T00:00:00Z",
+          "brand_id": "somnalux",
+          "to_status": "flagged"
+        },
+        {
+          "date": "2026-03-02T00:00:00Z",
+          "brand_id": "polarpod",
+          "to_status": "flagged"
+        },
+        {
+          "date": "2026-04-12T00:00:00Z",
+          "brand_id": "polarpod",
+          "to_status": "under_review"
+        },
+        {
+          "date": "2026-04-20T00:00:00Z",
+          "brand_id": "polarpod",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-05-21T00:00:00Z",
+          "brand_id": "somnalux",
+          "to_status": "degraded"
+        },
+        {
+          "date": "2026-07-08T00:00:00Z",
+          "brand_id": "somnalux",
+          "to_status": "revoked"
+        },
+        {
+          "date": "2026-08-05T00:00:00Z",
+          "brand_id": "auralite-wellness",
+          "to_status": "flagged"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "bioptimizers",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "froya-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "froya-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "norse-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "norse-organics",
+          "to_status": "verified"
+        }
+      ],
+      "entry_hash": "3f63448f1f217412ccec24cffbbc22901884e35f6b1e81eba207cdb7f38b67a6",
+      "signature": "mYBCwkb7EZ2PUiYfuo0QusKBOn1Tc5m5ubh6IpYyCK5co2kZ7+h7i7Q3e+gi5GkGggOpr+KnoFF9iV3dFZvGAA==",
+      "signing_key": "ed25519:MCowBQYDK2VwAyEAPYznSNiELA8x6Eym7rk50GExv63QJeupB9uQQCOh7Ck=",
+      "anchor": {
+        "method": "opentimestamps",
+        "status": "anchored",
+        "note": "Anchored in Bitcoin block 963803. Verify with: ots verify (see /ledger).",
+        "proof": "/ots/v7.ots",
+        "stamped_file_content": "the entry_hash hex string, no trailing newline",
+        "submitted_at": "2026-08-24T03:26:29.818Z",
+        "bitcoin_block": 963803,
+        "upgraded_at": "2026-08-24T15:18:58.730Z"
+      }
+    },
+    {
+      "version": 8,
+      "timestamp": "2026-08-24T03:37:19.721Z",
+      "index_sha256": "7637f6d3f4dfdd79e062620dba74e5481c58788f619cfdbb4c040fb4cda96f1b",
+      "prev_entry_hash": "3f63448f1f217412ccec24cffbbc22901884e35f6b1e81eba207cdb7f38b67a6",
+      "stats": {
+        "categories": 38,
+        "brands": 842,
+        "claims": 1022,
+        "accountability_entries": 13
+      },
+      "accountability_log": [
+        {
+          "date": "2026-02-20T00:00:00Z",
+          "brand_id": "somnalux",
+          "to_status": "flagged"
+        },
+        {
+          "date": "2026-03-02T00:00:00Z",
+          "brand_id": "polarpod",
+          "to_status": "flagged"
+        },
+        {
+          "date": "2026-04-12T00:00:00Z",
+          "brand_id": "polarpod",
+          "to_status": "under_review"
+        },
+        {
+          "date": "2026-04-20T00:00:00Z",
+          "brand_id": "polarpod",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-05-21T00:00:00Z",
+          "brand_id": "somnalux",
+          "to_status": "degraded"
+        },
+        {
+          "date": "2026-07-08T00:00:00Z",
+          "brand_id": "somnalux",
+          "to_status": "revoked"
+        },
+        {
+          "date": "2026-08-05T00:00:00Z",
+          "brand_id": "auralite-wellness",
+          "to_status": "flagged"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "bioptimizers",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "froya-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "froya-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "norse-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "norse-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T03:37:09.472Z",
+          "brand_id": "bioptimizers",
+          "to_status": "verified"
+        }
+      ],
+      "entry_hash": "53a21a0ffc2f900eb9d583b1daffc43643f4133409bf00cc04be3b1f8c3f87da",
+      "signature": "yL4+pyQtEmdRI8afAbimKH9gF4LUAoUWjVi7eZFvDNe2QkL5exmAUYInwx5pJzNME+n32hb0YpnrGYSe/FVdBQ==",
+      "signing_key": "ed25519:MCowBQYDK2VwAyEAPYznSNiELA8x6Eym7rk50GExv63QJeupB9uQQCOh7Ck=",
+      "anchor": {
+        "method": "opentimestamps",
+        "status": "anchored",
+        "note": "Anchored in Bitcoin block 963805. Verify with: ots verify (see /ledger).",
+        "proof": "/ots/v8.ots",
+        "stamped_file_content": "the entry_hash hex string, no trailing newline",
+        "submitted_at": "2026-08-24T03:37:21.420Z",
+        "bitcoin_block": 963805,
+        "upgraded_at": "2026-08-24T15:19:00.292Z"
+      }
+    },
+    {
+      "version": 9,
+      "timestamp": "2026-08-24T15:18:52.194Z",
+      "index_sha256": "3f09f39aeeb80edf5f2e75910fde587aaf659282b41e58211c69a886cbac9e5c",
+      "prev_entry_hash": "53a21a0ffc2f900eb9d583b1daffc43643f4133409bf00cc04be3b1f8c3f87da",
+      "stats": {
+        "categories": 38,
+        "brands": 842,
+        "claims": 1022,
+        "accountability_entries": 13
+      },
+      "accountability_log": [
+        {
+          "date": "2026-02-20T00:00:00Z",
+          "brand_id": "somnalux",
+          "to_status": "flagged"
+        },
+        {
+          "date": "2026-03-02T00:00:00Z",
+          "brand_id": "polarpod",
+          "to_status": "flagged"
+        },
+        {
+          "date": "2026-04-12T00:00:00Z",
+          "brand_id": "polarpod",
+          "to_status": "under_review"
+        },
+        {
+          "date": "2026-04-20T00:00:00Z",
+          "brand_id": "polarpod",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-05-21T00:00:00Z",
+          "brand_id": "somnalux",
+          "to_status": "degraded"
+        },
+        {
+          "date": "2026-07-08T00:00:00Z",
+          "brand_id": "somnalux",
+          "to_status": "revoked"
+        },
+        {
+          "date": "2026-08-05T00:00:00Z",
+          "brand_id": "auralite-wellness",
+          "to_status": "flagged"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "bioptimizers",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "froya-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "froya-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "norse-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "norse-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T03:37:09.472Z",
+          "brand_id": "bioptimizers",
+          "to_status": "verified"
+        }
+      ],
+      "entry_hash": "a28602f7a5717bc935dcb535df32cba8eda9cb981b81cb78b7ea7127f058d768",
+      "signature": "mm+nglc47oUGJV2dkyHsVilHWPX8GdvHRRrn3M/Hg073sGYUyOpB0AxRtRTUwNjAUyPmhJPqJfSxniJpRSoeAQ==",
+      "signing_key": "ed25519:MCowBQYDK2VwAyEAPYznSNiELA8x6Eym7rk50GExv63QJeupB9uQQCOh7Ck=",
+      "anchor": {
+        "method": "opentimestamps",
+        "status": "anchored",
+        "note": "Anchored in Bitcoin block 963874. Verify with: ots verify (see /ledger).",
+        "proof": "/ots/v9.ots",
+        "stamped_file_content": "the entry_hash hex string, no trailing newline",
+        "submitted_at": "2026-08-24T15:18:53.709Z",
+        "bitcoin_block": 963874,
+        "upgraded_at": "2026-08-24T17:06:38.838Z"
+      }
+    },
+    {
+      "version": 10,
+      "timestamp": "2026-08-24T17:06:35.302Z",
+      "index_sha256": "c43dc2eb231d5467761d0c406201628eb8d4516b43d5dd0fa1ba63fd80959eec",
+      "prev_entry_hash": "a28602f7a5717bc935dcb535df32cba8eda9cb981b81cb78b7ea7127f058d768",
+      "annotation": "expansion: 25 new categories + 6 category extensions (158 brands, 230 claims) — index now 63 categories / 999 brands / 1252 claims",
+      "stats": {
+        "categories": 63,
+        "brands": 999,
+        "claims": 1252,
+        "accountability_entries": 13
+      },
+      "accountability_log": [
+        {
+          "date": "2026-02-20T00:00:00Z",
+          "brand_id": "somnalux",
+          "to_status": "flagged"
+        },
+        {
+          "date": "2026-03-02T00:00:00Z",
+          "brand_id": "polarpod",
+          "to_status": "flagged"
+        },
+        {
+          "date": "2026-04-12T00:00:00Z",
+          "brand_id": "polarpod",
+          "to_status": "under_review"
+        },
+        {
+          "date": "2026-04-20T00:00:00Z",
+          "brand_id": "polarpod",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-05-21T00:00:00Z",
+          "brand_id": "somnalux",
+          "to_status": "degraded"
+        },
+        {
+          "date": "2026-07-08T00:00:00Z",
+          "brand_id": "somnalux",
+          "to_status": "revoked"
+        },
+        {
+          "date": "2026-08-05T00:00:00Z",
+          "brand_id": "auralite-wellness",
+          "to_status": "flagged"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "bioptimizers",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "froya-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "froya-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "norse-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "norse-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T03:37:09.472Z",
+          "brand_id": "bioptimizers",
+          "to_status": "verified"
+        }
+      ],
+      "entry_hash": "bb48a3847284bf6865726d2471a3720a66c6e646350f700f678e5a3806860dd4",
+      "signature": "kGA5juDtFDsKrb8iNpbozk+z0LCWIWs7vjCL7wh33l4Kxw1GVQJXHnHDE5mGS5oG8yC8hpjAgkyCc2htZ5VTBQ==",
+      "signing_key": "ed25519:MCowBQYDK2VwAyEAPYznSNiELA8x6Eym7rk50GExv63QJeupB9uQQCOh7Ck=",
+      "anchor": {
+        "method": "opentimestamps",
+        "status": "anchored",
+        "note": "Anchored in Bitcoin block 963885. Verify with: ots verify (see /ledger).",
+        "proof": "/ots/v10.ots",
+        "stamped_file_content": "the entry_hash hex string, no trailing newline",
+        "submitted_at": "2026-08-24T17:06:37.160Z",
+        "bitcoin_block": 963885,
+        "upgraded_at": "2026-08-24T18:15:18.949Z"
+      }
+    },
+    {
+      "version": 11,
+      "timestamp": "2026-08-24T18:15:15.721Z",
+      "index_sha256": "353e2cdbfeb6eb3cf968939143f3afdd1d3b51e1da89c31218548a93cf77464c",
+      "prev_entry_hash": "bb48a3847284bf6865726d2471a3720a66c6e646350f700f678e5a3806860dd4",
+      "annotation": "expansion: spiritual-learning-publishers + meditation-apps (15 brands, 47 claims) — index now 65 categories / 1014 brands / 1299 claims",
+      "stats": {
+        "categories": 65,
+        "brands": 1014,
+        "claims": 1299,
+        "accountability_entries": 13
+      },
+      "accountability_log": [
+        {
+          "date": "2026-02-20T00:00:00Z",
+          "brand_id": "somnalux",
+          "to_status": "flagged"
+        },
+        {
+          "date": "2026-03-02T00:00:00Z",
+          "brand_id": "polarpod",
+          "to_status": "flagged"
+        },
+        {
+          "date": "2026-04-12T00:00:00Z",
+          "brand_id": "polarpod",
+          "to_status": "under_review"
+        },
+        {
+          "date": "2026-04-20T00:00:00Z",
+          "brand_id": "polarpod",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-05-21T00:00:00Z",
+          "brand_id": "somnalux",
+          "to_status": "degraded"
+        },
+        {
+          "date": "2026-07-08T00:00:00Z",
+          "brand_id": "somnalux",
+          "to_status": "revoked"
+        },
+        {
+          "date": "2026-08-05T00:00:00Z",
+          "brand_id": "auralite-wellness",
+          "to_status": "flagged"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "bioptimizers",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "froya-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "froya-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "norse-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "norse-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T03:37:09.472Z",
+          "brand_id": "bioptimizers",
+          "to_status": "verified"
+        }
+      ],
+      "entry_hash": "14d82a71dead65c85ecbd376a79c8b782b110583f8af474bd4d19ff3b01b38ec",
+      "signature": "YQvDFyZzhq9QDnJv0ccWmJlEN4DqAtafp8qcLQ28GI8DJuLrmhCljvSbICpL/0zyxh1u5liTm+GziAJapI5eCA==",
+      "signing_key": "ed25519:MCowBQYDK2VwAyEAPYznSNiELA8x6Eym7rk50GExv63QJeupB9uQQCOh7Ck=",
+      "anchor": {
+        "method": "opentimestamps",
+        "status": "anchored",
+        "note": "Anchored in Bitcoin block 963901. Verify with: ots verify (see /ledger).",
+        "proof": "/ots/v11.ots",
+        "stamped_file_content": "the entry_hash hex string, no trailing newline",
+        "submitted_at": "2026-08-24T18:15:17.315Z",
+        "bitcoin_block": 963901,
+        "upgraded_at": "2026-08-24T21:45:24.898Z"
+      }
+    },
+    {
+      "version": 12,
+      "timestamp": "2026-08-24T21:45:21.929Z",
+      "index_sha256": "5f81d8ba689acf8327393242bdc6547919f83ee73b82c928223ab62b7f4b665d",
+      "prev_entry_hash": "14d82a71dead65c85ecbd376a79c8b782b110583f8af474bd4d19ff3b01b38ec",
+      "annotation": "continuous audit: claim freshness re-checks (last_checked refresh, no content changes)",
+      "stats": {
+        "categories": 65,
+        "brands": 1014,
+        "claims": 1299,
+        "accountability_entries": 13
+      },
+      "accountability_log": [
+        {
+          "date": "2026-02-20T00:00:00Z",
+          "brand_id": "somnalux",
+          "to_status": "flagged"
+        },
+        {
+          "date": "2026-03-02T00:00:00Z",
+          "brand_id": "polarpod",
+          "to_status": "flagged"
+        },
+        {
+          "date": "2026-04-12T00:00:00Z",
+          "brand_id": "polarpod",
+          "to_status": "under_review"
+        },
+        {
+          "date": "2026-04-20T00:00:00Z",
+          "brand_id": "polarpod",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-05-21T00:00:00Z",
+          "brand_id": "somnalux",
+          "to_status": "degraded"
+        },
+        {
+          "date": "2026-07-08T00:00:00Z",
+          "brand_id": "somnalux",
+          "to_status": "revoked"
+        },
+        {
+          "date": "2026-08-05T00:00:00Z",
+          "brand_id": "auralite-wellness",
+          "to_status": "flagged"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "bioptimizers",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "froya-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "froya-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "norse-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "norse-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T03:37:09.472Z",
+          "brand_id": "bioptimizers",
+          "to_status": "verified"
+        }
+      ],
+      "entry_hash": "4b84d953229962e57fefb3daf005c0f6532572e8a8a4cf59ec3cb47bc8668a0e",
+      "signature": "dPEG3DGH6nEYr/GiMuRPT+GBIQo2wAgWt0wxeKDpdV+0GCJsO7XJIGUNtHytFIkyyXcFfqM9P2LkW9OoQBfvDQ==",
+      "signing_key": "ed25519:MCowBQYDK2VwAyEAPYznSNiELA8x6Eym7rk50GExv63QJeupB9uQQCOh7Ck=",
+      "anchor": {
+        "method": "opentimestamps",
+        "status": "anchored",
+        "note": "Anchored in Bitcoin block 963922. Verify with: ots verify (see /ledger).",
+        "proof": "/ots/v12.ots",
+        "stamped_file_content": "the entry_hash hex string, no trailing newline",
+        "submitted_at": "2026-08-24T21:45:23.256Z",
+        "bitcoin_block": 963922,
+        "upgraded_at": "2026-08-25T00:52:20.559Z"
+      }
+    },
+    {
+      "version": 13,
+      "timestamp": "2026-08-25T04:45:49.646Z",
+      "index_sha256": "246e579209fe856e9c97354c840b149058f7dfaae17f7e8852eb7507b86908b4",
+      "prev_entry_hash": "4b84d953229962e57fefb3daf005c0f6532572e8a8a4cf59ec3cb47bc8668a0e",
+      "annotation": "density expansion (tech & electronics): 27 new categories + 3 deepened (303 brands, 189 claims, 14 spec blocks) — index now 92 categories / 1317 brands / 1488 claims",
+      "stats": {
+        "categories": 92,
+        "brands": 1317,
+        "claims": 1488,
+        "accountability_entries": 13
+      },
+      "accountability_log": [
+        {
+          "date": "2026-02-20T00:00:00Z",
+          "brand_id": "somnalux",
+          "to_status": "flagged"
+        },
+        {
+          "date": "2026-03-02T00:00:00Z",
+          "brand_id": "polarpod",
+          "to_status": "flagged"
+        },
+        {
+          "date": "2026-04-12T00:00:00Z",
+          "brand_id": "polarpod",
+          "to_status": "under_review"
+        },
+        {
+          "date": "2026-04-20T00:00:00Z",
+          "brand_id": "polarpod",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-05-21T00:00:00Z",
+          "brand_id": "somnalux",
+          "to_status": "degraded"
+        },
+        {
+          "date": "2026-07-08T00:00:00Z",
+          "brand_id": "somnalux",
+          "to_status": "revoked"
+        },
+        {
+          "date": "2026-08-05T00:00:00Z",
+          "brand_id": "auralite-wellness",
+          "to_status": "flagged"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "bioptimizers",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "froya-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "froya-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "norse-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "norse-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T03:37:09.472Z",
+          "brand_id": "bioptimizers",
+          "to_status": "verified"
+        }
+      ],
+      "entry_hash": "2452802eb623f71cd0964b801380661a21b5fecf75339b0db8ac3fa1174e6da5",
+      "signature": "d1NY3cUUCj9rhasnmFAL8cI2aWPCrOpb2x4IeMXxLnfQSubJCB2619JXB+l9xf+JVNvJ8b8lWzrkAGEk4o4HAA==",
+      "signing_key": "ed25519:MCowBQYDK2VwAyEAPYznSNiELA8x6Eym7rk50GExv63QJeupB9uQQCOh7Ck=",
+      "anchor": {
+        "method": "opentimestamps",
+        "status": "anchored",
+        "note": "Anchored in Bitcoin block 963950. Verify with: ots verify (see /ledger).",
+        "proof": "/ots/v13.ots",
+        "stamped_file_content": "the entry_hash hex string, no trailing newline",
+        "submitted_at": "2026-08-25T04:45:51.324Z",
+        "bitcoin_block": 963950,
+        "upgraded_at": "2026-08-25T05:33:41.744Z"
+      }
+    },
+    {
+      "version": 14,
+      "timestamp": "2026-08-25T04:54:08.476Z",
+      "index_sha256": "a63b4f23869520dd388d158d3943966c1a8e31504bffc112cdd33c57b9ca2490",
+      "prev_entry_hash": "2452802eb623f71cd0964b801380661a21b5fecf75339b0db8ac3fa1174e6da5",
+      "annotation": "density expansion, two lanes: home & lifestyle (14 new categories + 5 deepened, 336 brands, 143 claims, 8 spec blocks) and beauty & cosmetics (9 new categories + 3 deepened, 304 brands, 152 claims, 15 INCI spec blocks) — index now 115 categories / 1957 brands / 1783 claims",
+      "stats": {
+        "categories": 115,
+        "brands": 1957,
+        "claims": 1783,
+        "accountability_entries": 13
+      },
+      "accountability_log": [
+        {
+          "date": "2026-02-20T00:00:00Z",
+          "brand_id": "somnalux",
+          "to_status": "flagged"
+        },
+        {
+          "date": "2026-03-02T00:00:00Z",
+          "brand_id": "polarpod",
+          "to_status": "flagged"
+        },
+        {
+          "date": "2026-04-12T00:00:00Z",
+          "brand_id": "polarpod",
+          "to_status": "under_review"
+        },
+        {
+          "date": "2026-04-20T00:00:00Z",
+          "brand_id": "polarpod",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-05-21T00:00:00Z",
+          "brand_id": "somnalux",
+          "to_status": "degraded"
+        },
+        {
+          "date": "2026-07-08T00:00:00Z",
+          "brand_id": "somnalux",
+          "to_status": "revoked"
+        },
+        {
+          "date": "2026-08-05T00:00:00Z",
+          "brand_id": "auralite-wellness",
+          "to_status": "flagged"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "bioptimizers",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "froya-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "froya-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "norse-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "norse-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T03:37:09.472Z",
+          "brand_id": "bioptimizers",
+          "to_status": "verified"
+        }
+      ],
+      "entry_hash": "196b0c50501cab5a94daf50c6e342744be53428e1d929d207c6150a4906e1d99",
+      "signature": "Y+o6Bod4QpQEXFxseSzA66LL3xzCUBtsd0Tf7drcMcFcp41Gpi8TKRIpJZ+pfXIYlp4Rek7I+tiJoOsP0pG6CA==",
+      "signing_key": "ed25519:MCowBQYDK2VwAyEAPYznSNiELA8x6Eym7rk50GExv63QJeupB9uQQCOh7Ck=",
+      "anchor": {
+        "method": "opentimestamps",
+        "status": "anchored",
+        "note": "Anchored in Bitcoin block 963952. Verify with: ots verify (see /ledger).",
+        "proof": "/ots/v14.ots",
+        "stamped_file_content": "the entry_hash hex string, no trailing newline",
+        "submitted_at": "2026-08-25T04:54:09.995Z",
+        "bitcoin_block": 963952,
+        "upgraded_at": "2026-08-25T06:07:05.033Z"
+      }
+    },
+    {
+      "version": 15,
+      "timestamp": "2026-08-25T05:04:26.818Z",
+      "index_sha256": "8537782fbb55e46c11dfa88f60d111c34a1208a7f9a615c7e52ed3f3a3de7b1c",
+      "prev_entry_hash": "196b0c50501cab5a94daf50c6e342744be53428e1d929d207c6150a4906e1d99",
+      "annotation": "density expansion, two lanes: consumables & services (28 new categories + 10 deepened incl. magnesium-supplements 5→14, 397 brands, 179 claims) and food & grocery (15 new categories + cereal-granola/sports-hydration/laundry-detergent deepened, 284 brands, 140 claims) — index now 158 categories / 2638 brands / 2102 claims",
+      "stats": {
+        "categories": 158,
+        "brands": 2638,
+        "claims": 2102,
+        "accountability_entries": 13
+      },
+      "accountability_log": [
+        {
+          "date": "2026-02-20T00:00:00Z",
+          "brand_id": "somnalux",
+          "to_status": "flagged"
+        },
+        {
+          "date": "2026-03-02T00:00:00Z",
+          "brand_id": "polarpod",
+          "to_status": "flagged"
+        },
+        {
+          "date": "2026-04-12T00:00:00Z",
+          "brand_id": "polarpod",
+          "to_status": "under_review"
+        },
+        {
+          "date": "2026-04-20T00:00:00Z",
+          "brand_id": "polarpod",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-05-21T00:00:00Z",
+          "brand_id": "somnalux",
+          "to_status": "degraded"
+        },
+        {
+          "date": "2026-07-08T00:00:00Z",
+          "brand_id": "somnalux",
+          "to_status": "revoked"
+        },
+        {
+          "date": "2026-08-05T00:00:00Z",
+          "brand_id": "auralite-wellness",
+          "to_status": "flagged"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "bioptimizers",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "froya-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "froya-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "norse-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "norse-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T03:37:09.472Z",
+          "brand_id": "bioptimizers",
+          "to_status": "verified"
+        }
+      ],
+      "entry_hash": "c9a7e5ef8760f13f7ba124fa038b4b836aa640baa67badaa00c09564fbcbc71c",
+      "signature": "7AS8lEclElzaQNiXbBudNb+c2LmJ9LwX5BAlWdphq3L0FJUQC/WeCIjL2DBqLrPi4gDbUzudaSsKZnQTXUslAg==",
+      "signing_key": "ed25519:MCowBQYDK2VwAyEAPYznSNiELA8x6Eym7rk50GExv63QJeupB9uQQCOh7Ck=",
+      "anchor": {
+        "method": "opentimestamps",
+        "status": "anchored",
+        "note": "Anchored in Bitcoin block 963952. Verify with: ots verify (see /ledger).",
+        "proof": "/ots/v15.ots",
+        "stamped_file_content": "the entry_hash hex string, no trailing newline",
+        "submitted_at": "2026-08-25T05:04:28.253Z",
+        "bitcoin_block": 963952,
+        "upgraded_at": "2026-08-25T06:07:06.728Z"
+      }
+    },
+    {
+      "version": 16,
+      "timestamp": "2026-08-25T05:28:04.631Z",
+      "index_sha256": "d1279a8cd701bf30b1564eb2aef3e7e71c85d173e55616f9b9a7b76a7b36f362",
+      "prev_entry_hash": "c9a7e5ef8760f13f7ba124fa038b4b836aa640baa67badaa00c09564fbcbc71c",
+      "annotation": "density expansion, two lanes: fitness & wellness (10 new categories + 6 deepened incl. cold-plunge gaining its real market roster, 186 brands, 79 claims) and physical consumer goods (23 new categories + 14 deepened, 396 brands, 169 claims) — index now 191 categories / 3220 brands / 2350 claims",
+      "stats": {
+        "categories": 191,
+        "brands": 3220,
+        "claims": 2350,
+        "accountability_entries": 13
+      },
+      "accountability_log": [
+        {
+          "date": "2026-02-20T00:00:00Z",
+          "brand_id": "somnalux",
+          "to_status": "flagged"
+        },
+        {
+          "date": "2026-03-02T00:00:00Z",
+          "brand_id": "polarpod",
+          "to_status": "flagged"
+        },
+        {
+          "date": "2026-04-12T00:00:00Z",
+          "brand_id": "polarpod",
+          "to_status": "under_review"
+        },
+        {
+          "date": "2026-04-20T00:00:00Z",
+          "brand_id": "polarpod",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-05-21T00:00:00Z",
+          "brand_id": "somnalux",
+          "to_status": "degraded"
+        },
+        {
+          "date": "2026-07-08T00:00:00Z",
+          "brand_id": "somnalux",
+          "to_status": "revoked"
+        },
+        {
+          "date": "2026-08-05T00:00:00Z",
+          "brand_id": "auralite-wellness",
+          "to_status": "flagged"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "bioptimizers",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "froya-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "froya-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "norse-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "norse-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T03:37:09.472Z",
+          "brand_id": "bioptimizers",
+          "to_status": "verified"
+        }
+      ],
+      "entry_hash": "85a13bdc2652cb37fcf770cb6e649c5dac72a987994b835a0a65bb3f4a7dcc07",
+      "signature": "JVDF1vzMhK+m4hsDNzWotctIiYO9HP0jT/MXlz41F0vGa8OQbP6hQFIOoQSU0RRl9cydKE6/PjdUf6NzYvELCg==",
+      "signing_key": "ed25519:MCowBQYDK2VwAyEAPYznSNiELA8x6Eym7rk50GExv63QJeupB9uQQCOh7Ck=",
+      "anchor": {
+        "method": "opentimestamps",
+        "status": "anchored",
+        "note": "Anchored in Bitcoin block 963956. Verify with: ots verify (see /ledger).",
+        "proof": "/ots/v16.ots",
+        "stamped_file_content": "the entry_hash hex string, no trailing newline",
+        "submitted_at": "2026-08-25T05:28:06.334Z",
+        "bitcoin_block": 963956,
+        "upgraded_at": "2026-08-25T06:31:46.208Z"
+      }
+    },
+    {
+      "version": 17,
+      "timestamp": "2026-08-25T05:33:38.713Z",
+      "index_sha256": "6b56456eb3c96596c2fea4c96ae9090307c513883157e0e8bedfc31543c6f8cc",
+      "prev_entry_hash": "85a13bdc2652cb37fcf770cb6e649c5dac72a987994b835a0a65bb3f4a7dcc07",
+      "annotation": "density expansion (fashion & apparel, final lane of eight): 18 new categories + 3 deepened (298 brands, 128 claims, 4 fabric spec blocks) — index now 209 categories / 3518 brands / 2478 claims",
+      "stats": {
+        "categories": 209,
+        "brands": 3518,
+        "claims": 2478,
+        "accountability_entries": 13
+      },
+      "accountability_log": [
+        {
+          "date": "2026-02-20T00:00:00Z",
+          "brand_id": "somnalux",
+          "to_status": "flagged"
+        },
+        {
+          "date": "2026-03-02T00:00:00Z",
+          "brand_id": "polarpod",
+          "to_status": "flagged"
+        },
+        {
+          "date": "2026-04-12T00:00:00Z",
+          "brand_id": "polarpod",
+          "to_status": "under_review"
+        },
+        {
+          "date": "2026-04-20T00:00:00Z",
+          "brand_id": "polarpod",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-05-21T00:00:00Z",
+          "brand_id": "somnalux",
+          "to_status": "degraded"
+        },
+        {
+          "date": "2026-07-08T00:00:00Z",
+          "brand_id": "somnalux",
+          "to_status": "revoked"
+        },
+        {
+          "date": "2026-08-05T00:00:00Z",
+          "brand_id": "auralite-wellness",
+          "to_status": "flagged"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "bioptimizers",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "froya-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "froya-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "norse-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "norse-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T03:37:09.472Z",
+          "brand_id": "bioptimizers",
+          "to_status": "verified"
+        }
+      ],
+      "entry_hash": "4b806726ddc20a4dee732b030e179c3bb416b80d68b78d6d71b33a4e58c44000",
+      "signature": "t055XH5PSFWPgutObTPHVSZmTVVb4jrvjs/K9V+XkIpjqMgxDR/97HiU3rV7bEtXckNrVeVrbEm/i33M4zkyDA==",
+      "signing_key": "ed25519:MCowBQYDK2VwAyEAPYznSNiELA8x6Eym7rk50GExv63QJeupB9uQQCOh7Ck=",
+      "anchor": {
+        "method": "opentimestamps",
+        "status": "anchored",
+        "note": "Anchored in Bitcoin block 963958. Verify with: ots verify (see /ledger).",
+        "proof": "/ots/v17.ots",
+        "stamped_file_content": "the entry_hash hex string, no trailing newline",
+        "submitted_at": "2026-08-25T05:33:40.111Z",
+        "bitcoin_block": 963958,
+        "upgraded_at": "2026-08-25T07:12:04.000Z"
+      }
+    },
+    {
+      "version": 18,
+      "timestamp": "2026-08-25T06:07:01.909Z",
+      "index_sha256": "d03104740e219d801a25e0d25b5dbe787d1119aeb4461692dafdad1f36f8f484",
+      "prev_entry_hash": "4b806726ddc20a4dee732b030e179c3bb416b80d68b78d6d71b33a4e58c44000",
+      "annotation": "Retired six fictional demonstration brands (Mineralum, ZenMag Co, Glacier Forge, NorthCask, PolarPod, Fjordline) from categories that now have real market coverage. Two demonstration entries retained, labeled, and excluded from rankings to illustrate the seal lifecycle: Auralite Wellness (flagged) and Somnalux (revoked).",
+      "stats": {
+        "categories": 209,
+        "brands": 3512,
+        "claims": 2467,
+        "accountability_entries": 18
+      },
+      "accountability_log": [
+        {
+          "date": "2026-02-20T00:00:00Z",
+          "brand_id": "somnalux",
+          "to_status": "flagged"
+        },
+        {
+          "date": "2026-05-21T00:00:00Z",
+          "brand_id": "somnalux",
+          "to_status": "degraded"
+        },
+        {
+          "date": "2026-07-08T00:00:00Z",
+          "brand_id": "somnalux",
+          "to_status": "revoked"
+        },
+        {
+          "date": "2026-08-05T00:00:00Z",
+          "brand_id": "auralite-wellness",
+          "to_status": "flagged"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "bioptimizers",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "froya-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "froya-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "norse-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "norse-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T03:37:09.472Z",
+          "brand_id": "bioptimizers",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-25T06:05:37.109Z",
+          "brand_id": "mineralum",
+          "to_status": "unverified"
+        },
+        {
+          "date": "2026-08-25T06:05:37.109Z",
+          "brand_id": "zenmag",
+          "to_status": "unverified"
+        },
+        {
+          "date": "2026-08-25T06:05:37.109Z",
+          "brand_id": "glacier-forge",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-25T06:05:37.109Z",
+          "brand_id": "northcask",
+          "to_status": "unverified"
+        },
+        {
+          "date": "2026-08-25T06:05:37.109Z",
+          "brand_id": "polarpod",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-25T06:05:37.109Z",
+          "brand_id": "fjordline",
+          "to_status": "unverified"
+        },
+        {
+          "date": "2026-08-25T06:05:37.109Z",
+          "brand_id": "auralite-wellness",
+          "to_status": "flagged"
+        },
+        {
+          "date": "2026-08-25T06:05:37.109Z",
+          "brand_id": "somnalux",
+          "to_status": "revoked"
+        }
+      ],
+      "entry_hash": "a383ff723fc34ad9414a1819ab89ada849e1cedf2858c1956b1d2e69d450441c",
+      "signature": "yVC5sXRfz+aT0wUJbwKz4ogi98GX5KpxfwmNQGmiCxsoBWvo58IHStC9QWaI5LQZtyzVNj6fFeog6M/qzdKoDA==",
+      "signing_key": "ed25519:MCowBQYDK2VwAyEAPYznSNiELA8x6Eym7rk50GExv63QJeupB9uQQCOh7Ck=",
+      "anchor": {
+        "method": "opentimestamps",
+        "status": "pending",
+        "note": "Submitted to public OTS calendars; Bitcoin attestation finalizes within hours. Until upgraded, the proof commits to calendar signatures only.",
+        "proof": "/ots/v18.ots",
+        "stamped_file_content": "the entry_hash hex string, no trailing newline",
+        "submitted_at": "2026-08-25T06:07:03.403Z"
+      }
+    },
+    {
+      "version": 19,
+      "timestamp": "2026-08-25T07:12:01.053Z",
+      "index_sha256": "dc858e2f41f2ba5007c8a588756bcfd8787aeb26bbf7dbfc3e340d73ddbbaad0",
+      "prev_entry_hash": "a383ff723fc34ad9414a1819ab89ada849e1cedf2858c1956b1d2e69d450441c",
+      "annotation": "mobile carriers expansion: prepaid-mobile + postpaid-mobile (2 new categories, 23 brands all captured-tier, 92 claims; Boost Mobile deep-captured in both with plan-terms spec blocks, 3 claims awaiting brand confirmation) — index now 211 categories / 3535 brands / 2559 claims",
+      "stats": {
+        "categories": 211,
+        "brands": 3535,
+        "claims": 2559,
+        "accountability_entries": 18
+      },
+      "accountability_log": [
+        {
+          "date": "2026-02-20T00:00:00Z",
+          "brand_id": "somnalux",
+          "to_status": "flagged"
+        },
+        {
+          "date": "2026-05-21T00:00:00Z",
+          "brand_id": "somnalux",
+          "to_status": "degraded"
+        },
+        {
+          "date": "2026-07-08T00:00:00Z",
+          "brand_id": "somnalux",
+          "to_status": "revoked"
+        },
+        {
+          "date": "2026-08-05T00:00:00Z",
+          "brand_id": "auralite-wellness",
+          "to_status": "flagged"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "bioptimizers",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "froya-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "froya-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "norse-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "norse-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T03:37:09.472Z",
+          "brand_id": "bioptimizers",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-25T06:05:37.109Z",
+          "brand_id": "mineralum",
+          "to_status": "unverified"
+        },
+        {
+          "date": "2026-08-25T06:05:37.109Z",
+          "brand_id": "zenmag",
+          "to_status": "unverified"
+        },
+        {
+          "date": "2026-08-25T06:05:37.109Z",
+          "brand_id": "glacier-forge",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-25T06:05:37.109Z",
+          "brand_id": "northcask",
+          "to_status": "unverified"
+        },
+        {
+          "date": "2026-08-25T06:05:37.109Z",
+          "brand_id": "polarpod",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-25T06:05:37.109Z",
+          "brand_id": "fjordline",
+          "to_status": "unverified"
+        },
+        {
+          "date": "2026-08-25T06:05:37.109Z",
+          "brand_id": "auralite-wellness",
+          "to_status": "flagged"
+        },
+        {
+          "date": "2026-08-25T06:05:37.109Z",
+          "brand_id": "somnalux",
+          "to_status": "revoked"
+        }
+      ],
+      "entry_hash": "a2b33d8c75af567412c51efc42a9136c1f5f01b1204d66871d52251b816191e1",
+      "signature": "0zjXI6dpgC14bwuj4GdmOE+hlQnb2Q/4oJSuqZSNp3tGVzP/RLY5OOe0U6a/eSZqtCQta0iZWaXHLKbAcCBcBQ==",
+      "signing_key": "ed25519:MCowBQYDK2VwAyEAPYznSNiELA8x6Eym7rk50GExv63QJeupB9uQQCOh7Ck=",
+      "anchor": {
+        "method": "opentimestamps",
+        "status": "pending",
+        "note": "Submitted to public OTS calendars; Bitcoin attestation finalizes within hours. Until upgraded, the proof commits to calendar signatures only.",
+        "proof": "/ots/v19.ots",
+        "stamped_file_content": "the entry_hash hex string, no trailing newline",
+        "submitted_at": "2026-08-25T07:12:02.346Z"
+      }
+    }
+  ]
+}

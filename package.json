@@ -1,0 +1,25 @@
+{
+  "name": "graviti-engine",
+  "version": "0.1.0",
+  "description": "Graviti's deterministic scoring engine, published for audit — the exact module that ranks every recommendation at graviti.thesingulariti.ai. Verification is paid; ranking is never paid.",
+  "type": "module",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sclaytonmyosin/graviti-engine.git"
+  },
+  "homepage": "https://graviti.thesingulariti.ai",
+  "scripts": {
+    "demo": "tsx demo/run.ts",
+    "verify:ledger": "node scripts/verify-ledger.mjs",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^24.3.0",
+    "tsx": "^4.20.0",
+    "typescript": "~5.9"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
