@@ -215,8 +215,19 @@ export interface AccountabilityEntry {
   /** Confirmation-loop events: a claim-level ask or its resolution. No
    *  lifecycle change, no penalty — logged so the loop is publicly auditable.
    *  "retired": a fictional demonstration brand removed from the index.
-   *  "demonstration_retained": a fictional exhibit kept, labeled, non-ranking. */
-  event?: "confirmation_request" | "confirmation_resolved" | "retired" | "demonstration_retained";
+   *  "demonstration_retained": a fictional exhibit kept, labeled, non-ranking.
+   *  "claim_removed": a claim struck from a brand's record (e.g. provenance
+   *  that cannot be cited), with the reason public.
+   *  "gap_report_delivered": a paid-tier gap report was prepared and delivered
+   *  to the brand — logged with payment status so the engagement itself is
+   *  publicly auditable. Findings and rank are never affected. */
+  event?:
+    | "confirmation_request"
+    | "confirmation_resolved"
+    | "retired"
+    | "demonstration_retained"
+    | "claim_removed"
+    | "gap_report_delivered";
   /** Entry concerns a labeled demonstration exhibit, not a real brand. */
   demo?: boolean;
 }
@@ -227,6 +238,124 @@ export function confirmationNote(claim: Claim, brandName: string): string | null
   const since = claim.confirmation_requested ? claim.confirmation_requested.slice(0, 10) : "recently";
   return `Graviti has asked ${brandName} to confirm this — awaiting response since ${since}.${claim.confirmation_reason ? ` Why: ${claim.confirmation_reason}` : ""}`;
 }
+
+// ---------------------------------------------------------------------------
+// Claim decay classes — per-claim-type freshness policy, disclosed and enforced.
+// A price changes on a promo calendar; a certification changes on an audit
+// calendar. One freshness bar for both would be either paranoid or blind, so
+// every claim gets a decay class with a disclosed re-verification window.
+// A claim past its window is STALE: it degrades VISIBLY (marked on every
+// payload, reduced scoring weight) — never silently, and never to zero.
+// Stale is not false; scoring absent data would defame, same convention as
+// the neutral 0.5 for unknown attributes and the not-a-zero rule for absent
+// specifications.
+// ---------------------------------------------------------------------------
+
+export type DecayClass = "fast" | "medium" | "slow" | "static";
+
+/** The public decay-class table. Windows are calibrated to how often each kind
+ *  of fact actually changes in the wild, not to what flatters the index. */
+export const CLAIM_DECAY_CLASSES: Record<DecayClass, { window_days: number | null; covers: string }> = {
+  fast: {
+    window_days: 45,
+    covers: "prices, promotional terms, discounts, free-shipping thresholds, plan lineups",
+  },
+  medium: {
+    window_days: 120,
+    covers:
+      "guarantees, warranties, shipping and return policies, product formulations — plus any claim " +
+      "no rule matches (the default: general marketing statements change on page-redesign timescales)",
+  },
+  slow: {
+    window_days: 365,
+    covers: "certifications, third-party testing documentation, facility/origin claims",
+  },
+  static: {
+    window_days: null,
+    covers: "founding facts, ownership, identity — facts that do not expire",
+  },
+};
+
+/** Ordered classification rules over the claim text — first match wins, and
+ *  the FASTEST class is checked first, so a claim mixing a promo price with a
+ *  founding date decays at the fastest applicable rate (the most volatile
+ *  component governs). Public and auditable: this table IS the policy. */
+export const CLAIM_DECAY_RULES: { decay_class: DecayClass; pattern: RegExp }[] = [
+  {
+    decay_class: "fast",
+    pattern:
+      /\$\s?\d|price|pricing|% off|discount|promo|\bdeals?\b|\bsale\b|free ship|subscri|autopay|\/mo\b|per month|\bplans?\b/i,
+  },
+  {
+    decay_class: "medium",
+    pattern:
+      /guarantee|warrant|refund|return|money.?back|risk.?free|shipping|deliver|formulat|ingredient|recipe/i,
+  },
+  {
+    decay_class: "slow",
+    pattern:
+      /certif|third.?part|lab.?test|tested|\bcoa\b|usda|\bgmp\b|iso \d|b corp|leaping bunny|climate neutral|facilit|made in|manufactur|sourc|origin|organic/i,
+  },
+  {
+    decay_class: "static",
+    pattern: /found(ed|er)|family.?owned|since \d{4}|established|started by|owned by|headquarter/i,
+  },
+];
+
+export function decayClassOf(claim: Claim): DecayClass {
+  for (const rule of CLAIM_DECAY_RULES) {
+    if (rule.pattern.test(claim.claim)) return rule.decay_class;
+  }
+  return "medium";
+}
+
+export interface ClaimDecay {
+  decay_class: DecayClass;
+  window_days: number | null;
+  days_since_check: number;
+  stale: boolean;
+  stale_note?: string;
+}
+
+export const STALE_MARKER = "stale — pending re-verification";
+
+/** Freshness verdict for one claim: its class, its window, and whether the
+ *  last successful re-verification is past that window. */
+export function claimDecay(claim: Claim, now: number = Date.now()): ClaimDecay {
+  const decay_class = decayClassOf(claim);
+  const { window_days } = CLAIM_DECAY_CLASSES[decay_class];
+  const days_since_check = Math.max(
+    0,
+    Math.floor((now - new Date(claim.last_checked).getTime()) / 86_400_000)
+  );
+  const stale = window_days !== null && days_since_check > window_days;
+  return {
+    decay_class,
+    window_days,
+    days_since_check,
+    stale,
+    ...(stale
+      ? {
+          stale_note:
+            `${STALE_MARKER}: last re-verified ${days_since_check} days ago, past the disclosed ` +
+            `${window_days}-day ${decay_class}-class window. Stale is not false — the claim stays ` +
+            `on record at reduced scoring weight until re-verification.`,
+        }
+      : {}),
+  };
+}
+
+export const CLAIM_DECAY_POLICY =
+  "Per-claim freshness policy, disclosed and enforced: every claim carries a decay class assigned by a " +
+  "public rule table in the open engine source (CLAIM_DECAY_RULES — first match wins, fastest class " +
+  "checked first, unmatched claims default to medium). Windows: fast 45d (prices, promotions, plan " +
+  "lineups), medium 120d (guarantees, policies, formulations, and the default), slow 365d " +
+  "(certifications, testing documentation, facility/origin), static (founding facts, ownership, " +
+  "identity — no expiry). A claim past its window is marked '" + STALE_MARKER + "' on every payload " +
+  "and counts at half weight where captured-claim depth feeds scoring, so a fully stale record " +
+  "degrades toward the neutral 0.5 used for unknowns — visibly, never silently, and never to zero: " +
+  "stale is not false, and scoring absent data would defame. Re-verification (the continuous audit " +
+  "crawl, prioritized by proximity to each claim's window) restores full weight.";
 
 export interface CategoryMeta {
   id: string;
@@ -398,7 +527,10 @@ export const RANKING_METHOD =
   "published to the accountability log. Scoring code is public and open for audit " +
   "(https://github.com/sclaytonmyosin/graviti-engine). Payment carries zero weight. Conversion data is " +
   "never an input: the engine is pure functions over the public index, and any ranking is reproducible " +
-  "from public data alone.";
+  "from public data alone. Every claim carries a disclosed decay class (fast 45d / medium 120d / slow " +
+  "365d / static); a claim past its window is marked 'stale — pending re-verification' on every payload " +
+  "and counts at half weight where claim depth feeds scoring — degraded visibly, never silently, and " +
+  "never to zero: stale is not false.";
 
 export const PAYMENT_BUYS =
   "Verification depth and re-evaluation queue position — never outcomes, never rank. A brand that fixes " +
@@ -446,6 +578,15 @@ export function disclosure(brands: Brand[], inIndex = true) {
         "Brands without captured claims (catalog_only) are never scored and never returned as " +
         "recommendations; they appear in landscapes labeled 'in the landscape, not yet evidenced'. " +
         "Within scoreable states, evidence tier carries zero rank weight.",
+    },
+    claim_decay: {
+      classes: Object.fromEntries(
+        Object.entries(CLAIM_DECAY_CLASSES).map(([k, v]) => [
+          k,
+          `${v.window_days === null ? "no expiry" : `${v.window_days}-day window`} — ${v.covers}`,
+        ])
+      ),
+      policy: CLAIM_DECAY_POLICY,
     },
     info_quality_influences_ranking: false,
     specifications_policy:
@@ -540,11 +681,13 @@ const SIGNAL_EXTRACTORS: Record<string, (b: Brand) => Record<string, number>> = 
   },
   "natural-skincare": (b) => {
     const a = b.attributes as Record<string, number & boolean>;
+    // Strict === true: expansion-lane entries carry "not captured" strings in
+    // boolean slots, and a truthy string must not score as a captured yes.
     return {
       value: clamp01(1 - Number(a.price_usd) / 80),
-      certified: a.certified_organic ? 1 : 0,
-      concentrated: a.waterless_formula ? 1 : 0,
-      scent_free: a.fragrance_free_option ? 1 : 0,
+      certified: a.certified_organic === true ? 1 : 0,
+      concentrated: a.waterless_formula === true ? 1 : 0,
+      scent_free: a.fragrance_free_option === true ? 1 : 0,
       guarantee: clamp01(Number(a.money_back_days) / 365),
     };
   },
@@ -562,15 +705,28 @@ const PRICE_TIER_SCORE: Record<string, number> = {
 
 function genericSignals(b: Brand): Record<string, number> {
   const a = b.attributes;
+  // Claim-decay enforcement where claim depth feeds scoring: a stale claim
+  // counts at half weight, so a fully stale 3-claim record scores the neutral
+  // 0.5 — degraded visibly toward "unknown", never zeroed (stale is not false).
+  const evidenceDepth = b.claims.reduce((sum, c) => sum + (claimDecay(c).stale ? 0.5 : 1), 0);
   return {
     value: PRICE_TIER_SCORE[String(a.price_tier)] ?? 0.5,
     tested: a.coa_advertised === true || a.third_party_tested === true ? 1 : 0,
-    evidence: clamp01(b.claims.length / 3),
+    evidence: clamp01(evidenceDepth / 3),
   };
 }
 
 export function signalsFor(categoryId: string): (b: Brand) => Record<string, number> {
-  return SIGNAL_EXTRACTORS[categoryId] ?? genericSignals;
+  const extractor = SIGNAL_EXTRACTORS[categoryId] ?? genericSignals;
+  // Finite guard: hand-built extractors assume the category's original numeric
+  // schema, but expansion-lane entries may lack those fields (Number(undefined)
+  // is NaN, and NaN poisons the whole fit score). An uncaptured attribute is
+  // unknown, not bad — it scores a disclosed neutral 0.5, same convention as
+  // the generic extractor's unknown price tier.
+  return (b: Brand) =>
+    Object.fromEntries(
+      Object.entries(extractor(b)).map(([k, v]) => [k, Number.isFinite(v) ? v : 0.5])
+    );
 }
 
 /** Descriptive text a brand carries; used for a small disclosed relevance bump
@@ -827,13 +983,18 @@ export function matchIntent(index: BrandIndex, question: string, intentProfile?:
         r.penalty > 0
           ? ` Carries a −${r.penalty.toFixed(2)} lifecycle penalty (${r.brand.verification.status}): ${r.brand.verification.flag?.issue ?? "see accountability log"}.`
           : "";
+      const staleCount = r.brand.claims.filter((c) => claimDecay(c).stale).length;
+      const staleNote =
+        staleCount > 0
+          ? ` ${staleCount > 1 ? `${staleCount} claims are past their decay windows` : "1 claim is past its decay window"} — ${STALE_MARKER} (reduced weight, never zero).`
+          : "";
       return {
         rank: i + 1,
         brand_id: r.brand.id,
         name: r.brand.name,
         product: r.brand.product,
         fit_score: r.fit_score,
-        fit_rationale: `Scored for ${intent.replaceAll("_", " ")}${emphasis} — ${facts(r.brand).join(", ")}.${lifecycleNote}`,
+        fit_rationale: `Scored for ${intent.replaceAll("_", " ")}${emphasis} — ${facts(r.brand).join(", ")}.${lifecycleNote}${staleNote}`,
         verified_paid: r.brand.verified_paid,
         verification_status: r.brand.verification.status,
         evidence_state: evidenceState(r.brand),
@@ -845,10 +1006,11 @@ export function matchIntent(index: BrandIndex, question: string, intentProfile?:
           ? { specifications: r.brand.specifications, info_quality: infoQuality(r.brand.specifications) }
           : {}),
         flag: r.brand.verification.flag ?? null,
-        // First two claims, plus any authenticated endorsements and any claims
-        // awaiting brand confirmation beyond them — both are always surfaced:
-        // endorsements as a distinct claim type, confirmation asks because
-        // hiding an open ask would defeat the loop's honesty.
+        // First two claims, plus any authenticated endorsements, any claims
+        // awaiting brand confirmation, and any stale claims beyond them — all
+        // are always surfaced: endorsements as a distinct claim type,
+        // confirmation asks and stale markers because hiding either would
+        // defeat the disclosure's honesty.
         top_claims: [
           ...r.brand.claims.slice(0, 2),
           ...r.brand.claims
@@ -856,26 +1018,33 @@ export function matchIntent(index: BrandIndex, question: string, intentProfile?:
             .filter(
               (c) =>
                 c.claim_type === "authenticated_endorsement" ||
-                c.confirmation_status === "awaiting_brand_confirmation"
+                c.confirmation_status === "awaiting_brand_confirmation" ||
+                claimDecay(c).stale
             ),
-        ].map((c) => ({
-          claim: c.claim,
-          provenance_url: c.provenance_url,
-          last_checked: c.last_checked,
-          claim_type: c.claim_type,
-          creator: c.creator,
-          relationship_disclosed: c.relationship_disclosed,
-          usage_verified: c.usage_verified,
-          certified_creator: c.certified_creator,
-          ...(c.confirmation_status
-            ? {
-                confirmation_status: c.confirmation_status,
-                confirmation_requested: c.confirmation_requested,
-                confirmation_reason: c.confirmation_reason,
-                confirmation_note: confirmationNote(c, r.brand.name),
-              }
-            : {}),
-        })),
+        ].map((c) => {
+          const decay = claimDecay(c);
+          return {
+            claim: c.claim,
+            provenance_url: c.provenance_url,
+            last_checked: c.last_checked,
+            claim_type: c.claim_type,
+            creator: c.creator,
+            relationship_disclosed: c.relationship_disclosed,
+            usage_verified: c.usage_verified,
+            certified_creator: c.certified_creator,
+            decay_class: decay.decay_class,
+            decay_window_days: decay.window_days,
+            ...(decay.stale ? { stale: true as const, stale_note: decay.stale_note } : {}),
+            ...(c.confirmation_status
+              ? {
+                  confirmation_status: c.confirmation_status,
+                  confirmation_requested: c.confirmation_requested,
+                  confirmation_reason: c.confirmation_reason,
+                  confirmation_note: confirmationNote(c, r.brand.name),
+                }
+              : {}),
+          };
+        }),
       };
     }),
     in_landscape_not_evidenced: inLandscapeOnly.map((b) => ({
@@ -1121,7 +1290,7 @@ export function getVerifiedClaims(index: BrandIndex, brand: string) {
         ...(hit.demo ? { demo: true, demo_note: hit.demo_note ?? DEMO_NOTE } : {}),
         verified_paid: hit.verified_paid,
         verification: hit.verification,
-        claims: hit.claims,
+        claims: hit.claims.map((c) => ({ ...c, decay: claimDecay(c) })),
         ...(hit.specifications
           ? { specifications: hit.specifications, info_quality: infoQuality(hit.specifications) }
           : { specifications_status: "not_yet_assessed — ingredient/spec disclosure data has not been captured for this brand; absence is not a zero score" }),
