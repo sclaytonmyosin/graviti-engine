@@ -4,6 +4,7 @@
   "index_hash_covers": "the object {accountability_log, categories} as served inside /index.json",
   "entry_hash_covers": "all entry fields except entry_hash, signature, signing_key, and anchor",
   "signature_scheme": "Ed25519 over the UTF-8 bytes of entry_hash; public key at /public-key.pem",
+  "files_manifest": "From v25 each entry's signed core carries files.artifacts: sha256 of every published data artifact, hashed per files.note — client-side transport-integrity verification against this manifest reaches the edge of the consumer's process; entries before v25 predate it and verify unchanged.",
   "entries": [
     {
       "version": 1,
@@ -1881,11 +1882,778 @@
       "signing_key": "ed25519:MCowBQYDK2VwAyEAPYznSNiELA8x6Eym7rk50GExv63QJeupB9uQQCOh7Ck=",
       "anchor": {
         "method": "opentimestamps",
-        "status": "pending",
-        "note": "Submitted to public OTS calendars; Bitcoin attestation finalizes within hours. Until upgraded, the proof commits to calendar signatures only.",
+        "status": "anchored",
+        "note": "Anchored in Bitcoin block 964023. Verify with: ots verify (see /ledger).",
         "proof": "/ots/v21.ots",
         "stamped_file_content": "the entry_hash hex string, no trailing newline",
-        "submitted_at": "2026-08-25T15:35:54.534Z"
+        "submitted_at": "2026-08-25T15:35:54.534Z",
+        "bitcoin_block": 964023,
+        "upgraded_at": "2026-08-25T16:47:55.820Z"
+      }
+    },
+    {
+      "version": 22,
+      "timestamp": "2026-08-25T16:28:58.462Z",
+      "index_sha256": "823406ff8b5a274c79f4e9f077fa22a509859898512ee3877c9a79b9696b5b64",
+      "prev_entry_hash": "ad78af8142871a3dfc05cdbdc65a293f467f5ac385b8bf0aeb23de288d65d2bc",
+      "annotation": "demo-era provenance scrub + data fixes: BiOptimizers' authenticated-endorsement claim removed — its provenance URL was a fictional placeholder from the product's demonstration era (example-graviti-endorsements.dev), and a claim that cannot cite real provenance does not stand as a claim; the removal is recorded in the accountability log, and an index-wide sweep confirmed no other real brand carries placeholder provenance (the two labeled demonstration exhibits, Auralite Wellness and Somnalux, retain synthetic citations by design); engine fix: fit scores are now guaranteed finite — hand-built category extractors score uncaptured attributes as a disclosed neutral 0.5 instead of NaN (True Botanicals and Tata Harper in natural-skincare reproduced NaN in the real engine), and truthy 'not captured' strings no longer count as a boolean yes — index now 211 categories / 3535 brands / 2558 claims",
+      "stats": {
+        "categories": 211,
+        "brands": 3535,
+        "claims": 2558,
+        "accountability_entries": 19
+      },
+      "accountability_log": [
+        {
+          "date": "2026-02-20T00:00:00Z",
+          "brand_id": "somnalux",
+          "to_status": "flagged"
+        },
+        {
+          "date": "2026-05-21T00:00:00Z",
+          "brand_id": "somnalux",
+          "to_status": "degraded"
+        },
+        {
+          "date": "2026-07-08T00:00:00Z",
+          "brand_id": "somnalux",
+          "to_status": "revoked"
+        },
+        {
+          "date": "2026-08-05T00:00:00Z",
+          "brand_id": "auralite-wellness",
+          "to_status": "flagged"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "bioptimizers",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "froya-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "froya-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "norse-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "norse-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T03:37:09.472Z",
+          "brand_id": "bioptimizers",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-25T06:05:37.109Z",
+          "brand_id": "mineralum",
+          "to_status": "unverified"
+        },
+        {
+          "date": "2026-08-25T06:05:37.109Z",
+          "brand_id": "zenmag",
+          "to_status": "unverified"
+        },
+        {
+          "date": "2026-08-25T06:05:37.109Z",
+          "brand_id": "glacier-forge",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-25T06:05:37.109Z",
+          "brand_id": "northcask",
+          "to_status": "unverified"
+        },
+        {
+          "date": "2026-08-25T06:05:37.109Z",
+          "brand_id": "polarpod",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-25T06:05:37.109Z",
+          "brand_id": "fjordline",
+          "to_status": "unverified"
+        },
+        {
+          "date": "2026-08-25T06:05:37.109Z",
+          "brand_id": "auralite-wellness",
+          "to_status": "flagged"
+        },
+        {
+          "date": "2026-08-25T06:05:37.109Z",
+          "brand_id": "somnalux",
+          "to_status": "revoked"
+        },
+        {
+          "date": "2026-08-25T16:30:00.000Z",
+          "brand_id": "bioptimizers",
+          "to_status": "verified"
+        }
+      ],
+      "entry_hash": "96f5a16da74aa86ff2639d4f590aa20dd8ab10132cab43d19bde85cbc9b283d2",
+      "signature": "GC2GkG9pvwXo+iT7LPFgTKFwADLebmz/fmifqI2EQQ3NjOGQoSO11BCkerlwrvblWGwWZa9aSj0QQME0bk6HDQ==",
+      "signing_key": "ed25519:MCowBQYDK2VwAyEAPYznSNiELA8x6Eym7rk50GExv63QJeupB9uQQCOh7Ck=",
+      "anchor": {
+        "method": "opentimestamps",
+        "status": "anchored",
+        "note": "Anchored in Bitcoin block 964033. Verify with: ots verify (see /ledger).",
+        "proof": "/ots/v22.ots",
+        "stamped_file_content": "the entry_hash hex string, no trailing newline",
+        "submitted_at": "2026-08-25T16:28:59.731Z",
+        "bitcoin_block": 964033,
+        "upgraded_at": "2026-08-26T03:38:19.520Z"
+      }
+    },
+    {
+      "version": 23,
+      "timestamp": "2026-08-25T16:47:52.738Z",
+      "index_sha256": "fd27b61f111c99cbce7c6faabfba2c60d6bb26623ffd9ae772fddce2512cc417",
+      "prev_entry_hash": "96f5a16da74aa86ff2639d4f590aa20dd8ab10132cab43d19bde85cbc9b283d2",
+      "annotation": "client report portal pages: three prepared gap reports (Frøya Organics, Boost Mobile, BiOptimizers) delivered as private tokened portal routes inside the platform — unlisted, noindexed, standings and receipts rendered live from the signed index; each delivery logged in the accountability log with the comp disclosure (list price $2,500, comped under client relationship — payment never changes findings or rank)",
+      "stats": {
+        "categories": 211,
+        "brands": 3535,
+        "claims": 2558,
+        "accountability_entries": 22
+      },
+      "accountability_log": [
+        {
+          "date": "2026-02-20T00:00:00Z",
+          "brand_id": "somnalux",
+          "to_status": "flagged"
+        },
+        {
+          "date": "2026-05-21T00:00:00Z",
+          "brand_id": "somnalux",
+          "to_status": "degraded"
+        },
+        {
+          "date": "2026-07-08T00:00:00Z",
+          "brand_id": "somnalux",
+          "to_status": "revoked"
+        },
+        {
+          "date": "2026-08-05T00:00:00Z",
+          "brand_id": "auralite-wellness",
+          "to_status": "flagged"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "bioptimizers",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "froya-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "froya-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "norse-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "norse-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T03:37:09.472Z",
+          "brand_id": "bioptimizers",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-25T06:05:37.109Z",
+          "brand_id": "mineralum",
+          "to_status": "unverified"
+        },
+        {
+          "date": "2026-08-25T06:05:37.109Z",
+          "brand_id": "zenmag",
+          "to_status": "unverified"
+        },
+        {
+          "date": "2026-08-25T06:05:37.109Z",
+          "brand_id": "glacier-forge",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-25T06:05:37.109Z",
+          "brand_id": "northcask",
+          "to_status": "unverified"
+        },
+        {
+          "date": "2026-08-25T06:05:37.109Z",
+          "brand_id": "polarpod",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-25T06:05:37.109Z",
+          "brand_id": "fjordline",
+          "to_status": "unverified"
+        },
+        {
+          "date": "2026-08-25T06:05:37.109Z",
+          "brand_id": "auralite-wellness",
+          "to_status": "flagged"
+        },
+        {
+          "date": "2026-08-25T06:05:37.109Z",
+          "brand_id": "somnalux",
+          "to_status": "revoked"
+        },
+        {
+          "date": "2026-08-25T16:30:00.000Z",
+          "brand_id": "bioptimizers",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-25T17:05:00.000Z",
+          "brand_id": "froya-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-25T17:05:00.000Z",
+          "brand_id": "boost-mobile",
+          "to_status": "unverified"
+        },
+        {
+          "date": "2026-08-25T17:05:00.000Z",
+          "brand_id": "bioptimizers",
+          "to_status": "verified"
+        }
+      ],
+      "entry_hash": "b74d9dfd4586dc3aad53afddc988b7d6a21c420c29083e5b9357064bed560aaf",
+      "signature": "MH9YHdyCm9As2vWgzbtFDHmZOZIsEyhLmfHIbIL7cLsM4bQlDnDe5C5xIGjedpHr0e5IVwDgePu4GasELPmwBA==",
+      "signing_key": "ed25519:MCowBQYDK2VwAyEAPYznSNiELA8x6Eym7rk50GExv63QJeupB9uQQCOh7Ck=",
+      "anchor": {
+        "method": "opentimestamps",
+        "status": "anchored",
+        "note": "Anchored in Bitcoin block 964032. Verify with: ots verify (see /ledger).",
+        "proof": "/ots/v23.ots",
+        "stamped_file_content": "the entry_hash hex string, no trailing newline",
+        "submitted_at": "2026-08-25T16:47:54.227Z",
+        "bitcoin_block": 964032,
+        "upgraded_at": "2026-08-26T03:38:21.172Z"
+      }
+    },
+    {
+      "version": 24,
+      "timestamp": "2026-08-25T17:02:46.859Z",
+      "index_sha256": "b82fa817228743288c03a8c685d88a29c9a786bffa511fcc0b2e512744de5487",
+      "prev_entry_hash": "b74d9dfd4586dc3aad53afddc988b7d6a21c420c29083e5b9357064bed560aaf",
+      "annotation": "streaming expansion lane: 5 new categories (faith-streaming, anime-streaming, free-streaming, live-tv-streaming, specialty-streaming) — 40 brands (37 captured / 3 catalog), 102 quote-verified claims with receipts; 7 streaming-services entries deep-capture upgraded in place (netflix, hulu, disney-plus, hbo-max, paramount-plus, peacock, apple-tv — prior claims carried forward with original timestamps, +21 new claims); cross-listings follow the boost-mobile suffix convention, nebula-streaming resolves the Anker collision",
+      "stats": {
+        "categories": 216,
+        "brands": 3575,
+        "claims": 2681,
+        "accountability_entries": 22
+      },
+      "accountability_log": [
+        {
+          "date": "2026-02-20T00:00:00Z",
+          "brand_id": "somnalux",
+          "to_status": "flagged"
+        },
+        {
+          "date": "2026-05-21T00:00:00Z",
+          "brand_id": "somnalux",
+          "to_status": "degraded"
+        },
+        {
+          "date": "2026-07-08T00:00:00Z",
+          "brand_id": "somnalux",
+          "to_status": "revoked"
+        },
+        {
+          "date": "2026-08-05T00:00:00Z",
+          "brand_id": "auralite-wellness",
+          "to_status": "flagged"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "bioptimizers",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "froya-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "froya-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "norse-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "norse-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T03:37:09.472Z",
+          "brand_id": "bioptimizers",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-25T06:05:37.109Z",
+          "brand_id": "mineralum",
+          "to_status": "unverified"
+        },
+        {
+          "date": "2026-08-25T06:05:37.109Z",
+          "brand_id": "zenmag",
+          "to_status": "unverified"
+        },
+        {
+          "date": "2026-08-25T06:05:37.109Z",
+          "brand_id": "glacier-forge",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-25T06:05:37.109Z",
+          "brand_id": "northcask",
+          "to_status": "unverified"
+        },
+        {
+          "date": "2026-08-25T06:05:37.109Z",
+          "brand_id": "polarpod",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-25T06:05:37.109Z",
+          "brand_id": "fjordline",
+          "to_status": "unverified"
+        },
+        {
+          "date": "2026-08-25T06:05:37.109Z",
+          "brand_id": "auralite-wellness",
+          "to_status": "flagged"
+        },
+        {
+          "date": "2026-08-25T06:05:37.109Z",
+          "brand_id": "somnalux",
+          "to_status": "revoked"
+        },
+        {
+          "date": "2026-08-25T16:30:00.000Z",
+          "brand_id": "bioptimizers",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-25T17:05:00.000Z",
+          "brand_id": "froya-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-25T17:05:00.000Z",
+          "brand_id": "boost-mobile",
+          "to_status": "unverified"
+        },
+        {
+          "date": "2026-08-25T17:05:00.000Z",
+          "brand_id": "bioptimizers",
+          "to_status": "verified"
+        }
+      ],
+      "entry_hash": "0ec6c50623ba805eeb13722bd9c5b752ccb033e7633a6e095a8ef71e3e4182fd",
+      "signature": "tW/oKMBx1pjFE3V6X31JSqYYyddhPlCcPuYp61GYPfQVLyg4g5tqTM6D+CB1m1skKWmCZzz15v4HOMUzFcLEAw==",
+      "signing_key": "ed25519:MCowBQYDK2VwAyEAPYznSNiELA8x6Eym7rk50GExv63QJeupB9uQQCOh7Ck=",
+      "anchor": {
+        "method": "opentimestamps",
+        "status": "anchored",
+        "note": "Anchored in Bitcoin block 964042. Verify with: ots verify (see /ledger).",
+        "proof": "/ots/v24.ots",
+        "stamped_file_content": "the entry_hash hex string, no trailing newline",
+        "submitted_at": "2026-08-25T17:02:48.370Z",
+        "bitcoin_block": 964042,
+        "upgraded_at": "2026-08-26T03:38:22.743Z"
+      }
+    },
+    {
+      "version": 25,
+      "timestamp": "2026-08-26T03:38:16.640Z",
+      "index_sha256": "c6fab95c124660e67ecf6c8dc8f3211d08e639789125de8bc03667386b215fec",
+      "prev_entry_hash": "0ec6c50623ba805eeb13722bd9c5b752ccb033e7633a6e095a8ef71e3e4182fd",
+      "files": {
+        "note": "sha256 of every published data artifact, pinned inside this signed entry so transport-layer tampering between origin and client is detectable. JSON artifacts: hash of the canonical JSON (recursively sorted keys, no whitespace) after deleting the volatile top-level fields generated_at and integrity (build timestamp, and this entry's own hash — self-referential by construction; both absent in per-category files, where the delete is a no-op). Reproduce: curl -s <url> | jq -cjS 'del(.generated_at, .integrity)' | sha256sum. /llms.txt: hash of the exact served bytes. Tokened client-report payloads are deliberately unlisted — their URLs are private to their recipients. Scripted verification: verify-payload.mjs at https://github.com/sclaytonmyosin/graviti-engine.",
+        "artifacts": {
+          "/index.json": "3f5dfaffa40c5602294a993ff9bc6716c814d196a208631dd0f17ccaa9f504c6",
+          "/index-full.json": "712e933cdc30462b2acc2aa073f99c31aa5f98ad64be2279fb6ec1afed669770",
+          "/data/categories/magnesium-supplements.json": "76c5979523c8c43b2d97c1ba4b4c87c5b320bda4fa114e557429b3ccade86e3c",
+          "/data/categories/cold-plunge.json": "b0bc2709697db557d590bb8ff98e8ebb05a56ccae6829f4a0b0bf30d8b86c705",
+          "/data/categories/sports-hydration.json": "98fea2adc17e61012d7eb18750e8593c9108ba91188422a9956e4b4131cb91b6",
+          "/data/categories/laundry-detergent.json": "08f4d19b2e1fe1068296ae7549df74785ccaf61bbf39d4488a54121aefb4ea07",
+          "/data/categories/natural-skincare.json": "894dc01ee517e00a88edb98b33344a953b9948b56005c81b38af12e8fd2a9218",
+          "/data/categories/athleisure.json": "151580ae144df0395a7454dfe3352da2d753e2cd797ae080531b616b6bb2cc1a",
+          "/data/categories/sneakers-athletic-footwear.json": "97e75712899513197d89871efbfaa22ad8c6bf5946dca129b63578568fcb838f",
+          "/data/categories/denim-basics.json": "eb058ae4f636c7f10af59b610f8b8a942216317fc72d0f402e9b9eec11f7b0eb",
+          "/data/categories/outdoor-apparel.json": "715cd709f4dfd69b254e3ce83ef991e412818b1a7ca3a908da72af87e3f5489f",
+          "/data/categories/protein-bars-snacks.json": "b5639f5ccf074f7e29af57939f4b78371f9abb202f03c6086d8d1f96fe85b710",
+          "/data/categories/coffee.json": "d93785eeadc10a5d4141f2694f663134d12b71c112fd99f440f6e1599fced36e",
+          "/data/categories/energy-drinks.json": "beb58a004a1aac987b10615680014472a8271012831f59e0313efe887b49d30a",
+          "/data/categories/plant-milks.json": "da6fa9b3e321d180131d71cd4a35c926d1cac56f0b76c778aa2091d690358e7d",
+          "/data/categories/functional-beverages.json": "f20a92dbe2525a2fc4a18fc403f8a7a41161f0fa73b2eb5760469c09538e28df",
+          "/data/categories/meal-delivery.json": "b6cdc8b0b15a2a295d3ed823db47a022ff38bba09b27597158722be467820833",
+          "/data/categories/endurance-nutrition.json": "24648cedfaacd33438ffb524098d8a5b9bf5ef02d654da0c555cbc6937ea7762",
+          "/data/categories/cardio-connected-fitness.json": "8568b46b185d14445507aa4ac7585a4214d11baecd1ba5fb502fd3beee1c8f2c",
+          "/data/categories/home-gym-strength.json": "f9f2a2e7be9bc516fbd1d0f375a0b04eedfac4087f8d29755ba0a77cec4b84a2",
+          "/data/categories/gym-chains.json": "439c6f39c7787b7348bbf6e9b03ba2d1486d386b16f81bb3e9aae8ac69ef6113",
+          "/data/categories/fitness-coaching-platforms.json": "93a0cedf3e7d6f5932929116d96cb30baef7a679cbc15b520067c921c380e6a9",
+          "/data/categories/fitness-wearables.json": "e6b56c7111fa0aad0be2cc51b93a0be42b3176120556ceaa437a83b777b7a476",
+          "/data/categories/protein-powder.json": "58f3d1a230bde0c049c381edee2665491b51a67a7870cd358a15e0ec7603f975",
+          "/data/categories/creatine.json": "75ae1346748ddbddbc89f8359764aad8078230f53abf2494c72aa6f92c9ba433",
+          "/data/categories/pre-workout.json": "67f447fdd3de94530b12bb5104f29c72c7071b399fff1f80a96532eacbfab899",
+          "/data/categories/sleep-supplements.json": "88757f3335794e575469c45323eda465ce541114a220e11dd634681a992f8f0f",
+          "/data/categories/greens-powders.json": "6c11c59a7e66ef50260e6401dce4773b7b507fd933691fadbdaf7d675dde44d2",
+          "/data/categories/hair-loss-supplements.json": "065302582ef57e8414b0761db9449216ed88bed29287d669dc40147e3c09215a",
+          "/data/categories/multivitamins-daily-health.json": "04f95a75de2ab388074d13de0ef2e9dcb78ed29196a9242e7f7a5135dce9cac4",
+          "/data/categories/collagen.json": "00af4ef97b20bdd80aca97c8c5cf22ffb8267cb84594f31ccf20b93849c2a2a8",
+          "/data/categories/skincare.json": "202fc3a00fea33ce3184b97b3696cf5e14089521a8439e3c87829d446d477ab5",
+          "/data/categories/haircare.json": "3517f701df52b6ae0bfcff2296dcb7dadf43c6c29fe128c2541599f300dcde3b",
+          "/data/categories/grooming-personal-care.json": "3cffcfffa698028ddde600f577789b99b4e212c5dbb32e86d32d6ce7a0f5146c",
+          "/data/categories/mattresses.json": "ec4e58851631857bb04b6e12412e55b05e41df67081053aaee6c85fb9af2e123",
+          "/data/categories/cbd.json": "9fea4d795cbefd3f95c7c4cf3d1e0e26471b920c6b683e4fa240c8c419247981",
+          "/data/categories/peptide-therapy-providers.json": "326115327508bb3c0c00c2d3cb401e602b54868e8ee99409fdb747266c3393d3",
+          "/data/categories/business-coaching-courses.json": "03ea2a962da9c83b49294d55446b0611173b80e5dfd139e82bf024cfb1407f54",
+          "/data/categories/fine-jewelry.json": "b5a824496e930f63c0d75c5416e34342dfa40cf0c3bab7ec1c507fd9c67ad27e",
+          "/data/categories/demi-fine-jewelry.json": "c92df37d7d1fd6d06423d5cf609a7f044f23fb02de6e57825db9e5a1b1f10926",
+          "/data/categories/outdoor-furniture.json": "34c6b996b030b17c00e319397682dd846d10c31c6adababd9749c75d87d7f714",
+          "/data/categories/movie-theater-chains.json": "80f921fe012dae5f0bf3150c78fdfc6850685c8da5890355b8ae42cbe8eb192b",
+          "/data/categories/wearable-blankets-loungewear.json": "2810021eea2e43235e078d782000ee78ed4178281f835b6d648b9e44899a6c86",
+          "/data/categories/freight-brokerage-logistics.json": "40809bfeae3908bdd5ea120e06d4c231af8bb6001dc6186168efef7c0cfb07e7",
+          "/data/categories/retail-financing-stores.json": "c8a5c5c1214f8d40db0f097b8cb7c32d08a15a175c250a900617418292ba076a",
+          "/data/categories/insulated-smart-drinkware.json": "70b140424d6e876f3b4d16d9691c8c35f02d8b9e2f1cdc657b074ad3321d3d3f",
+          "/data/categories/planners-stationery.json": "122bba2017eccb5ba78e7f46814b844c02968db9aa17dd9db63a9c064e967c0e",
+          "/data/categories/recipe-meal-planning-apps.json": "8fdf1152c82ad18ddf58465e2b1d548dbab30e52f47ffc262deb2df8f7d35cd0",
+          "/data/categories/budget-airlines.json": "8a8a500dc995d9b8f5e9a458d35a4231eaaf08cd61f81ac221b78eab20ebe0bb",
+          "/data/categories/sporting-goods-retailers.json": "4b6654e67fe0c768fed9246427d374b28949db4beb2964f0af33911670120c03",
+          "/data/categories/classic-resort-apparel.json": "39ee42916eb42c4b8b0a0e16d4073b1ddcf071f04ee679259b8ea2875725080d",
+          "/data/categories/performance-menswear.json": "4dc91597b42bccb296f6713f31951609c1c0aff79d8b95f33d1a6be2845f1d74",
+          "/data/categories/kids-play-equipment-toys.json": "f88ece361d50a1b3bc414cdbef69d86ae05f4f136460c2097f96cd94a88be1ed",
+          "/data/categories/home-audio-speakers.json": "e3bf971d8416a13a87eda0894ea2bdf0f2166f5c1fc14931e9d1960fb964d051",
+          "/data/categories/streaming-services.json": "ae3a172f47d54f7eb4082799c8ffc4063844b2690946f20c2742075ace58cc36",
+          "/data/categories/home-water-treatment.json": "763ca0aa4eb94efea7dc42b56d61f17674ba702843b7e2f770ddc8c765238fdf",
+          "/data/categories/pet-tech.json": "975214fc6af69a623c48d32a5a0aedf9404ef4fb652a1a2c266c7b9d46f16ad2",
+          "/data/categories/healthcare-systems.json": "ac1160f1342e5390bafa0de087012f14f5c68c66af7046b9637aa513dc80d732",
+          "/data/categories/small-business-accounting-software.json": "917065ff4ad33bd43ef70beda492e7bac53c25981833c11f9873c2755c4caa2a",
+          "/data/categories/credit-bureaus-monitoring.json": "ffee16dd0cda13f905e8e0b17951a6a38dbfcc22358b716cc44ed09a6c8cc00f",
+          "/data/categories/luggage.json": "32df7ef1e6199ccb90f1b059c7e2668352ac913e282bba28ebbbc40d10c5dcd0",
+          "/data/categories/home-appliances.json": "8943c11f570bc64334c3d853f0c82a344c38697c8ea9b7153845391b0fa8b036",
+          "/data/categories/fast-food-chains.json": "bf24bba79c817cf5fad3830af69644811dc1a940c238fffef3393191b40e74b2",
+          "/data/categories/prescription-eyewear.json": "2a1c4cf68f127efce5f0c8b469224d82a03ed29f0f5c618b8f05d241b862dcf1",
+          "/data/categories/performance-bedding.json": "0fe5b2cc2e910bf2b587a18f26b5083f46f71e7923132ad85e86770e8fce8377",
+          "/data/categories/spiritual-learning-publishers.json": "4fe7a42cb24b158f47776d3e64dfa44a76e771e82345bf80b74c365275f9d60d",
+          "/data/categories/meditation-apps.json": "c9b6b3714f2373778a37878143da61b06446a2e1341e7fd2b19a144f890cb3b9",
+          "/data/categories/laptops-computers.json": "4894b2fd7841bad9f3b70a3760f68c1431092caf5f2994022622d362c2768275",
+          "/data/categories/smartphones.json": "4cfe619276c4d1c16b2fafe2741075a80e9be0bde83c57f21cd7caa44009de59",
+          "/data/categories/home-security-cameras.json": "64b8b52532b883486d898fb51f32e01ed079d73986581e0472dd3d7247573cf3",
+          "/data/categories/smart-home-hubs.json": "88d779cd4d8b79f657dfd4724189864199feed9d0288b5780b3cd7102b5c734f",
+          "/data/categories/game-controllers.json": "4f2c8de13f4a986ce58bb0b389c2f9ec667c786ddff5afca54c55888b500f997",
+          "/data/categories/gaming-chairs.json": "a9ecc7061ec5002dd55e877e477f24ad36a542eeb5399a49d1c2ae1aa5610918",
+          "/data/categories/gaming-handhelds.json": "c351165bf077cbb63100716d0aa45c098fd1138c0a268e40f4a4f39500a10b2a",
+          "/data/categories/cameras-photography.json": "d531568aa3992744d789604479d1483516ee97e944616638ce0c56c76b0cddf7",
+          "/data/categories/charging-power-accessories.json": "c6ae90eb135ba1ec97ea41de40a07a89bab0d55f32115b9383cd832a9bf2b596",
+          "/data/categories/phone-cases-protection.json": "d34732ed9d836e89f456bb1b0168b42bdad51094c688dc99f4536923ce359104",
+          "/data/categories/password-managers.json": "2fa63df1a68fe6ffd598ce623e0dc3caa3cd7f515df37761744300a9f2d33563",
+          "/data/categories/consumer-antivirus-security.json": "e90f441bd8d87c431ae39c212d6747c9643b0896b08541fd603e1cd92edb7231",
+          "/data/categories/website-builders-hosting.json": "579a059a5bf95c2f6d7a77ff4d794e5b304a76c8bc6166e190aa3eb982b179c5",
+          "/data/categories/robot-vacuums.json": "3754a269e7faa983ba01af706941a00d2c9ef1fea44efc59283373e4530ed797",
+          "/data/categories/wifi-routers-mesh.json": "755f644d2fde18063de98bd5cc5ccf05fb2c2a484d3af6299ca2ab6c7219ad21",
+          "/data/categories/creator-streaming-gear.json": "6ad4de536586f706fe043d0a3dc94274b85713574ab8530f14aa9e5686c1c551",
+          "/data/categories/pc-components-cooling.json": "48359f249040880d334c658fe0cedf5e9d31463f6f6566804ef7e8ad42bc5c0a",
+          "/data/categories/home-projectors.json": "49fbb35c6f882182a7b1b6d1dad025d6c97a606afbf647b027f27f53529478ae",
+          "/data/categories/gaming-peripherals.json": "1180856767088d9230a9afefffe90a1209971a8985b311b4c1167bd183a866ae",
+          "/data/categories/external-storage.json": "21cbc55dc593af50322703b1d0a66564d7f461db6a3c70c69e26baae60415a9b",
+          "/data/categories/note-taking-productivity-apps.json": "5613270d75e4cf8a7ccdf8e705a7d1a0d71501654c3c2eddcf4f4aa04b15007c",
+          "/data/categories/smart-locks.json": "361478c3d90ccbb5015805e9e92cba907c485f5e4213c9217aa16a0eb2a728e8",
+          "/data/categories/smart-thermostats.json": "9dc08b7102f581f97c67b4c0c37c982fda70fe7278816e8cc0b5906fdb3cf080",
+          "/data/categories/tablets-e-readers.json": "c9ea7a66874454c5ebb09369a666a918a10f4b919429a6cc718da9785da7d34e",
+          "/data/categories/smart-lighting.json": "386768dba06f6dcd89e2d4e3c13e2635015e245395be0934a0e669cc89d7fd91",
+          "/data/categories/consumer-drones.json": "55e2c50c7df426ed86ae7ba6a433a3b0eb12ecb2a394c916e4ec8293739c308d",
+          "/data/categories/vpn-services.json": "1aa88b59fcb7e49fe16b35408573523e4bf445164cfe67a0817e05a557b88081",
+          "/data/categories/art-prints-dtc.json": "27c14c112cfadbc7202a3a0d21ddbc71637ef7c7256045019db687a44706f69a",
+          "/data/categories/candles-home-fragrance.json": "c6d36421c33c2b66c4045a788eecad92abd4e6993dccc052c635deb82b2ab278",
+          "/data/categories/ebikes-scooters.json": "a00f2df7fea02c56c3d3fe73a7a5b9c2ba33553eb3919d3090c59dac2fd2e5cb",
+          "/data/categories/garden-plants.json": "9befc0ca7ed6893070814c836bfde003963268f458fea37491bc112d90d2afb7",
+          "/data/categories/grills-outdoor-cooking.json": "61677084aab07f069c979005b087c8115be68b359310e266f37156dc18ef49da",
+          "/data/categories/home-decor.json": "978d91341fa8d27ba76b168bbfee3319aecc2593982886c82d65ddc23eb9c6ef",
+          "/data/categories/home-office-furniture.json": "40fedd3043e09b6d7e07fa3f55fc863139820c7cf9969f039881d945b1b91a6b",
+          "/data/categories/home-organization-storage.json": "991ba749deb7d803ffb69bb90fb00c990c2fdf5ddc5067cb0f7e087196895851",
+          "/data/categories/indoor-furniture.json": "05e70a67761732be2bde627efa108afacd33b500912f3f9b8f81effe880c23af",
+          "/data/categories/lighting.json": "d6e4db237283f43628e25eb25f2e0e42080b2ef9bff94e6a7c9f8d86e30610c9",
+          "/data/categories/paint-wallpaper.json": "ebc0148dc7cd6fd04cb35c1e20af7bec7db043973b103c709843730d79b4d551",
+          "/data/categories/rugs.json": "54508be6d13590162606d2f7dcc154aa8f7a22a685030f96c67834b3e4814ebb",
+          "/data/categories/tableware-dinnerware.json": "3f212f998f652b15baf379cb1a20721900befdaddf2679394dec89ee3b85dfb3",
+          "/data/categories/towels-bath-linens.json": "2def0323bc505760da50abc6f9929fb715fa37e55b47f1d376d82135f6156bde",
+          "/data/categories/complexion-makeup.json": "d81e433a7876e86532cfc5d9ca85e045cd9923cfa38236eeb090bd043b3f0a2e",
+          "/data/categories/lip-care-color.json": "eee8e17ef813dab32b6b73f17ee3467ecbae40ddce603883cb60834571252295",
+          "/data/categories/color-cosmetics.json": "fa17cc0d0726a1e8818761bd5e3a6748822ce3372e4b33d9ae0b70496fa61824",
+          "/data/categories/fragrance.json": "226fad28fe741d71477232a02a4d16bf5486bdfff4079ccb3b19bde4cdcec2e8",
+          "/data/categories/k-beauty.json": "4d6b076a4f7ff8c1d2b68efd03ddb593f595836edf0dead204193617ed6b687f",
+          "/data/categories/body-care.json": "2846750147cace683d0845526ee379b856f58edb9dfa2ff847072118bc6b2c1f",
+          "/data/categories/nailcare.json": "e449e50dbb894922c751f5ced4f06b11a66dffbfd7124713c50f8ebc3551b09b",
+          "/data/categories/beauty-tools-devices.json": "d99a4892e8d931c3273c22eec3a4c3bde60e7fbd6c208590f8fae74dd010e9d6",
+          "/data/categories/home-hair-color.json": "ff375beeab6ba28a89c5d855f5c5428ae5db8fd36813dbf2ade06fc7b0db6f91",
+          "/data/categories/probiotics-gut-health.json": "c5cdae3e820db2f694bc9417146689c22b094362b992d20af63a6d2571c09d08",
+          "/data/categories/omega-3-fish-oil.json": "0c4923d748ceaa8d2857ebc8189e1feff94da9962b4cc210812bb610a456dcfd",
+          "/data/categories/mushroom-supplements.json": "eafb48f50f4184841e0318290346b60a322f4aa6ea05956f62c12c9bf985192e",
+          "/data/categories/meal-replacement-shakes.json": "e42204f9bd1583ee4efd712d6d91766458139cb96b7f0841739cec87009d9f14",
+          "/data/categories/tea.json": "eb9798907ac5a442a3ef9678f54cd245cfdd2edc9316303316c17fb8874cbdce",
+          "/data/categories/craft-premium-chocolate.json": "3026d339159be70b346cae7cb79cc55940811b3101dd82e74143cfb00f8ef735",
+          "/data/categories/olive-oil.json": "08bfdacea1ab5eeea05e5362e2fa56fe92456152c339937c71ef9ab0a1f1ce18",
+          "/data/categories/premium-pantry.json": "63436a7df55c910a8f457c325035867b7857b0e87234cdd792380d913a4b29b8",
+          "/data/categories/healthy-snacks.json": "641cf4b667aa921ed9bbd65d39f72be1062dce9ea13d64527076d2d88a09011c",
+          "/data/categories/cereal-granola.json": "60f051235e405681fe1ad5b848b320ee486a30f423307250ae33d0003157263c",
+          "/data/categories/nut-butters.json": "f7a092a6bf375110c477c4ef3390758d395d50b20cc98f88aa853e84a571d838",
+          "/data/categories/bone-broth.json": "d210651360982dac630e5ba672b4639529f2a55bffd39e7d0b7fa177c64d1b8b",
+          "/data/categories/non-alcoholic-beer-spirits.json": "9bd2c43edff8d0c1a4c9ea2afa39bd32346be6fef14e8c19da0565a6857e1562",
+          "/data/categories/cold-pressed-juice.json": "b6cea506f6cdf8a9e53718decc899d6b85ac7d886de39372bcd23d9e34a69352",
+          "/data/categories/pet-food.json": "26c7b7d68240e037d8fc29c634a866b94f9cbeb9fbe0ef1734526cf9bcc5f5f0",
+          "/data/categories/oral-care.json": "682d19b5a28d0f1b058a647563dceafabcec2099c751d1612fc7505b92dcbb00",
+          "/data/categories/sunscreen.json": "deb9d400e5b9e34ae950f1a18d488d737a4354c05225476c702df492990d5c78",
+          "/data/categories/feminine-care.json": "da718121b32ef6a7b3917ae48cd9669e71e5cff70948decdc5e536ae036c698c",
+          "/data/categories/travel-booking.json": "0d801121041df8adb6d386f5684b4748ac1a57ef8b07ee085a2359ec0e95de09",
+          "/data/categories/travel-insurance.json": "593d68de7f3fc6b265664bf9a65bf3f44bfeb1c0d4b061093f09cb09b3dbb6e3",
+          "/data/categories/travel-esim.json": "8c1f6f8b597a137f34c820d2b0889858f0ca6d8bab32b0975d85d2328ce0f98d",
+          "/data/categories/car-rental.json": "037ef50eb377d656f011f00968cdfff1b7a0ca627b0c30f2bf3ad495fe4d2328",
+          "/data/categories/hotel-chains.json": "48d56f0fa9f00a01be3e463b26c154e03fb388960b0e0eb79b7d15c8a1688491",
+          "/data/categories/cruise-lines.json": "359580d0b52356e896b84d8decb5f157ac8c0b1ee9fc875b3a0095eb89bafd2f",
+          "/data/categories/budgeting-apps.json": "37d44452df751841060819d2397ff6f4da6d9cd7df35bc373c172a3d5ef80467",
+          "/data/categories/robo-advisors.json": "bc70c42770cfd60ed3e6f8ff502d061be16dfcd444c319aca4d821d47d178d39",
+          "/data/categories/pet-insurance.json": "5226f92c3ae823d5986ca3f0aaa4b829bac4e9c9f70133d1553e76ae888a1f22",
+          "/data/categories/renters-insurance.json": "53087156de3bdf8852ecda4945c894f4f6fe769cd8746cd53cbeb9025e30f9c3",
+          "/data/categories/plant-based-meat-alternatives.json": "54cbb21141927025102425b0540a5e15ae1055f9406330b63286c9f3fe5910b4",
+          "/data/categories/plant-based-dairy-alternatives.json": "8794ae5847dcafd5676fe20e9ccc393f1e1228e1668f2d2e667409a724202b58",
+          "/data/categories/frozen-prepared-foods.json": "990b744f905c2cab3b69feccfbc0d4c35eefa618c6b5343fcdb8225254eadc37",
+          "/data/categories/condiments-sauces.json": "91e91d1e3f239dde0ab38cd65f87b5e46fc994e9e15c3fda2be584f04fb35742",
+          "/data/categories/hot-sauce.json": "5c6003b083d13a51238824d6c5822ca0a118faa2310d53826b035ce13b872ca8",
+          "/data/categories/baking.json": "093d064ab0c9b49813fca251c1d021a22057c2028da0b75457a38101255d568b",
+          "/data/categories/pasta-grains-premium.json": "870f9039bc04f937d488f24b8a401baaa0c662bdff585fc130f87d619bdce9e4",
+          "/data/categories/canned-tinned-fish.json": "f72bed7f3ff3c239930b09e56fc18db3c3cd1398508ded9e316d792204eed3cb",
+          "/data/categories/baby-kids-food.json": "852615d31310c3cec6a4a30be100631fa27ce0641e87c2e6eb9b5804255bc1cf",
+          "/data/categories/bread-bakery-dtc.json": "b7d0a4ebaccbcc366711d4bd71ac11c3b6b2f47c63b246ea8065c1ae4e3c58e2",
+          "/data/categories/sparkling-water-soda-alternatives.json": "87d398c4224c95c2538118ff741eb9bcce0fd6ccb4b6bc0e42c091d9d862c640",
+          "/data/categories/wine-dtc-natural-wine.json": "49962fa49ba8a596035f67c936a4d5d95946ab855e6ba90f416140f76a0eccba",
+          "/data/categories/craft-spirits.json": "a28b0a9b1f19525cf81e2fa0ea78c879bc00d43c061bd1a2cd4105358f2742da",
+          "/data/categories/craft-beer.json": "ee4be46920a45f4abff6c6303a10fffedbe4e2dc69e52673099e4aa8ef54fed2",
+          "/data/categories/regional-international-pantry.json": "c30e031b4cb911b441b469438a3cd049ef28fa8b4ed8d7ddb79d31834d645115",
+          "/data/categories/recovery-tools.json": "529da2e2cca2f3c23733768dcb2d52232cfb605395a5dcad2c49b99edd048a97",
+          "/data/categories/home-saunas.json": "2a4c14df5edabad24e4f04635d6fc6a40369fc71401b296806432f51c38db4da",
+          "/data/categories/red-light-therapy.json": "00442a4b0c94dc9e7ec787ae9bb873e3936fbebde1fb4a412e94c3c4d153495d",
+          "/data/categories/sleep-tech.json": "c1aa24a869a486cc4919931ba7ae0be7ab5e9698cb2a09f626e6e2515155b174",
+          "/data/categories/yoga-pilates-gear.json": "cedeb7de73b99fd587495c627fc016284b222a9dc613094af14753b26d51ecd6",
+          "/data/categories/massage-chairs.json": "83a3cd2b7acd21261f0e0c1236579de8de7487e3e4008181c386a67ac3440360",
+          "/data/categories/functional-training-accessories.json": "320792ac89e88a13fce6e6cfebe18623cd30280d6729e21cdded24eea3a20d2c",
+          "/data/categories/boxing-mma-gear.json": "2bc32cf6c134b081f87359ab8b18e3cae58ea7dab51b777f01a1dcaa6d34fce3",
+          "/data/categories/vitamin-d.json": "c8f880fbedb6a443a983e5c26eef51ff1819215aee7bc73cf792d322d63a4c25",
+          "/data/categories/body-composition-scales.json": "12c7af4528439a0b4b6cfb65b614cac67a3a8a76d7f4b88ef1ac47566b0caddf",
+          "/data/categories/headphones-earbuds.json": "ba244059ef18155c7a90dae0d54b56c3884e18b9b956a0e95565d8fae4f95bf1",
+          "/data/categories/tvs.json": "60b620ae9f37e4fccb2c2b58dce14e374ede43f69a04ae34e4ec3044dfcd0fbc",
+          "/data/categories/computer-monitors.json": "b4a8598182be5943bd826594d96286b3200917dd806061fe44e4b2796be67def",
+          "/data/categories/3d-printers.json": "7f9ab75abd279f234ecdaf5cd9c91567682b7b789146ec5eb40b3ada1ca3d5f1",
+          "/data/categories/strollers-car-seats.json": "10660cab0de5c1e556c1864815c3ded86f7bbafe75a337f85cdf218fd4f778e6",
+          "/data/categories/baby-monitors.json": "d8ee41349b283f585f15cc782ded1d9d2635d313a104a4bd22adc3743bcee8c3",
+          "/data/categories/nursery-kids-furniture.json": "d8004bd418b3bd88d4eadacdde044604dcb7bab4a933708220cd3dad2cf60035",
+          "/data/categories/pet-gear.json": "ff71cb2b89d656792e50ec63c93287a2a2c1136e6e7b87964d89be31bf5cae4c",
+          "/data/categories/air-purifiers.json": "d0f1a858239ca3ee964c50e5aa735c8498191e9522826b902e127acbabd943f1",
+          "/data/categories/vacuums-floor-care.json": "67a69008222f8edd3029bf47a72f738c08353ecbb6603927af834e16a5c5eb82",
+          "/data/categories/power-tools-diy.json": "e2b7bee91df70fa73e8344cdf2be108d728b2f51ab789fc8d997f5418628a319",
+          "/data/categories/lawn-garden-power.json": "4b503ec844a903faa1d7113a1292cf1bacd5775d18c0db43c49f627cc39883bd",
+          "/data/categories/cookware.json": "0b7fe4a04063a597ad109380cbda222176c03a1e360fe7bd1dc1e73dd39c8b3d",
+          "/data/categories/kitchen-knives.json": "7b30b15d6a5b6709c23633138afd73c45127b23a6dd1b23b4e2b936dc6de44bb",
+          "/data/categories/small-kitchen-appliances.json": "f232789a469cf27067533b2fc23f836d6e02dd263adc8accaff4ee89e88da570",
+          "/data/categories/espresso-coffee-machines.json": "4555c7ac7141ee34602a91cfd3072163bac4a58b87bfc02cf57dea0993ab61b6",
+          "/data/categories/camping-hiking-gear.json": "241e0b5b0d3a980badad88d6e8425fe67f0c76a1bc7476a9bb968eb93d59a6e7",
+          "/data/categories/bicycles.json": "18a4cf0323bcbfe63ba1d26a1e9ebdee7ae68654f56dce137eb48c2cbe50f490",
+          "/data/categories/winter-sports.json": "f3841a3f052341afda5cf59b67e258d44bb664daa9e041261103138e6c31e2a3",
+          "/data/categories/golf-equipment.json": "347999a6eefb5620189405500aef44ed6f740b736899cc21fe0886086fb6a010",
+          "/data/categories/pickleball.json": "8ce71b3eae11b805f71e1da9ec6f14eb4b97b47bf0c0b728e9527cb259c9986d",
+          "/data/categories/watches.json": "c39bea9a9f59d46bdcf66f95e8e9de11331446bf5112c4cfc9efcb45935ac2c7",
+          "/data/categories/sunglasses.json": "5feb163b70e5a5251dc76b810ea20a2060ac619c2245badd065dccbc175dc33f",
+          "/data/categories/heritage-selvedge-denim.json": "032eeccff47f2e7ec93aad65473dd53473503fb5bec0656ac039f2a9ecfbfe26",
+          "/data/categories/womens-intimates-shapewear.json": "6cef58f5bc38b86e852d9c2c8da6384d39c515f874550c3eb758c684e46a77ec",
+          "/data/categories/swimwear.json": "5debb4b380c372ec72364588535ce80328136b2fec5fbf60d2595907c7a7701e",
+          "/data/categories/mens-tailoring-suiting.json": "ab6f07a53fc1801f10212203a1fefb28c4c3fa777a372b9ef84fd49b90b49d35",
+          "/data/categories/womenswear-dtc.json": "7c9193bda35edb77480ab6711a300b5257b23eaf3728a00379efd818bae85c0d",
+          "/data/categories/workwear-apparel.json": "14005983b07cbeb0df5c56730e4ed28bf33d4866742888a684d2ada3f6c2e8cf",
+          "/data/categories/handbags-leather-goods.json": "c8fcc95857a05e039e0aaea3219439db03286f91df97041accc2c6a5af7d0657",
+          "/data/categories/boots-dress-shoes.json": "40398835349d838203881e7dfbff072785c6776bb7a26fb1b40e1c09bcac780b",
+          "/data/categories/sustainable-circular-fashion.json": "2316455fc77a86d9f509b67e2cfb719d32e56909f7b1d717b4524c2eafad7912",
+          "/data/categories/kids-baby-clothing.json": "b2948fd87f2289dabb4a3a4ea67d70b01ac3aaaed99c794ec4992db4b13e3d5e",
+          "/data/categories/performance-socks.json": "6d836cbcb2eee89d31badc90c5f247deb673bfe35190c68edca98c28da6bb147",
+          "/data/categories/fashion-rental-resale.json": "b6b4b0de6cbe781276c4fdf6f3df65c8c4968f7cef248d3f5eef4d99ca7d744b",
+          "/data/categories/hats-headwear.json": "e9b4e2ddd223aa0ef22dd27858f9b7af90f9c0d7c9488deb5cca840ef4e6ceb0",
+          "/data/categories/womens-flats-comfort-shoes.json": "6fe2e8392b452bd5b9bc7a122739c7a039fe98160d0590cc91d1f510fbc4363c",
+          "/data/categories/maternity-nursing-wear.json": "e87e5f78d45c047b5a048cfd286584231954cd2332854e96c74b74e74f393c16",
+          "/data/categories/fashion-outerwear.json": "d256e07cd6fa428ecc15f1f5d8f6c7c6d8b9e6bf22bddb8f53872d60b2c59b06",
+          "/data/categories/medical-scrubs.json": "b573613c0f8e21bed679b30ff3239e51cb2ab6ff1e364c01092cd126a6029793",
+          "/data/categories/streetwear.json": "7e1ac35c0d9d6dbd62b4b03452170433773831be2f3b7c62a36a5ab6be12d8a8",
+          "/data/categories/prepaid-mobile.json": "7e19918e925d9797e58f31a15db917758775f157c525b28f24f939b8aa04aeaa",
+          "/data/categories/postpaid-mobile.json": "d27d0dd5aa517b363364d4ad55e2b325513c39f5da9f55821297fce9a4ddec7b",
+          "/data/categories/faith-streaming.json": "92a2a334c3b4ab3f74bec739d3738aa2ff319ef2d764b401a2ce3ea27a0f3efa",
+          "/data/categories/anime-streaming.json": "15730187ab15357f99e71b9a68c21f4a91ebbc7d888bcaa113d0620271a2680d",
+          "/data/categories/free-streaming.json": "6683baad9f760c361bb3fdf12a52218a9190ad60dd484fc24a75d16f90797d8b",
+          "/data/categories/live-tv-streaming.json": "815dd6f8470ab4debbb7c171fdffeee1f963e87758bf345f809994c0383cf3c8",
+          "/data/categories/specialty-streaming.json": "a075fa60ab4ce938b1aa84ac8ec42bfc99962fe5d06aa30bc92c52cc2230cf5a",
+          "/llms.txt": "75fde227e1b1b7a46ae46ea5d13134ae7361f3ac72534868a1c530b005be81c1"
+        },
+        "not_pinned": {
+          "/pulse.json": "operational telemetry regenerated every build from live logs and build time — pinning it would force a ledger entry per rebuild or false tamper alarms; it is not part of the verified record",
+          "/receipts.json": "on-chain receipt cache re-verified against public explorers at every build; independently checkable by replaying the OTS proofs it cites",
+          "/ledger.json": "self-referential — verified by hash chain and signatures, stronger than a pinned hash",
+          "/public-key.pem": "a key pinned by a signature made with that key proves nothing; pin it out-of-band (committed in the public mirror repo)",
+          "/version.json": "per-build deploy-skew probe, unique by design"
+        }
+      },
+      "stats": {
+        "categories": 216,
+        "brands": 3575,
+        "claims": 2681,
+        "accountability_entries": 22
+      },
+      "accountability_log": [
+        {
+          "date": "2026-02-20T00:00:00Z",
+          "brand_id": "somnalux",
+          "to_status": "flagged"
+        },
+        {
+          "date": "2026-05-21T00:00:00Z",
+          "brand_id": "somnalux",
+          "to_status": "degraded"
+        },
+        {
+          "date": "2026-07-08T00:00:00Z",
+          "brand_id": "somnalux",
+          "to_status": "revoked"
+        },
+        {
+          "date": "2026-08-05T00:00:00Z",
+          "brand_id": "auralite-wellness",
+          "to_status": "flagged"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "bioptimizers",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "froya-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "froya-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "norse-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T02:59:43.773Z",
+          "brand_id": "norse-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-24T03:37:09.472Z",
+          "brand_id": "bioptimizers",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-25T06:05:37.109Z",
+          "brand_id": "mineralum",
+          "to_status": "unverified"
+        },
+        {
+          "date": "2026-08-25T06:05:37.109Z",
+          "brand_id": "zenmag",
+          "to_status": "unverified"
+        },
+        {
+          "date": "2026-08-25T06:05:37.109Z",
+          "brand_id": "glacier-forge",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-25T06:05:37.109Z",
+          "brand_id": "northcask",
+          "to_status": "unverified"
+        },
+        {
+          "date": "2026-08-25T06:05:37.109Z",
+          "brand_id": "polarpod",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-25T06:05:37.109Z",
+          "brand_id": "fjordline",
+          "to_status": "unverified"
+        },
+        {
+          "date": "2026-08-25T06:05:37.109Z",
+          "brand_id": "auralite-wellness",
+          "to_status": "flagged"
+        },
+        {
+          "date": "2026-08-25T06:05:37.109Z",
+          "brand_id": "somnalux",
+          "to_status": "revoked"
+        },
+        {
+          "date": "2026-08-25T16:30:00.000Z",
+          "brand_id": "bioptimizers",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-25T17:05:00.000Z",
+          "brand_id": "froya-organics",
+          "to_status": "verified"
+        },
+        {
+          "date": "2026-08-25T17:05:00.000Z",
+          "brand_id": "boost-mobile",
+          "to_status": "unverified"
+        },
+        {
+          "date": "2026-08-25T17:05:00.000Z",
+          "brand_id": "bioptimizers",
+          "to_status": "verified"
+        }
+      ],
+      "entry_hash": "d6cdf8628597311e0d7a443b77e4448143795d0d7b1c017415a6845a65735eae",
+      "signature": "y1pKvi9sjnK0oIGa9x0PWRsGJXBc8fxhYGqP1e+N2MeQMvBAN5mQbkrAoqnKM5GboS9haKx8QYXE/TAVp1gcAA==",
+      "signing_key": "ed25519:MCowBQYDK2VwAyEAPYznSNiELA8x6Eym7rk50GExv63QJeupB9uQQCOh7Ck=",
+      "anchor": {
+        "method": "opentimestamps",
+        "status": "pending",
+        "note": "Submitted to public OTS calendars; Bitcoin attestation finalizes within hours. Until upgraded, the proof commits to calendar signatures only.",
+        "proof": "/ots/v25.ots",
+        "stamped_file_content": "the entry_hash hex string, no trailing newline",
+        "submitted_at": "2026-08-26T03:38:17.822Z"
       }
     }
   ]
