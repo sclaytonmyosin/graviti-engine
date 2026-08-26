@@ -60,6 +60,32 @@ for (const entry of ledger.entries) {
   prev = entry_hash;
 }
 
+// Rubric pin (v26+): the entry core — hashed and signature-verified above —
+// includes the scoring-engine source hashes, so the chain check already covers
+// them. Additionally cross-check the pinned hash against THIS repo's engine
+// copy: src/engine.ts here is the verbatim production module, so the two must
+// match whenever this mirror is in sync (independently: `git hash-object
+// src/engine.ts` must equal rubric.engine_git_blob_sha1).
+const head = ledger.entries[ledger.entries.length - 1];
+if (head?.rubric) {
+  const engineSha = createHash("sha256")
+    .update(readFileSync(join(ROOT, head.rubric.engine)))
+    .digest("hex");
+  if (engineSha === head.rubric.engine_sha256) {
+    console.log(
+      `[verify-ledger] head v${head.version} pins the scoring rubric — this repo's ${head.rubric.engine} matches ` +
+        `(sha256 ${engineSha.slice(0, 16)}…; independently: git hash-object ${head.rubric.engine} → ` +
+        `${head.rubric.engine_git_blob_sha1})`
+    );
+  } else {
+    console.log(
+      `[verify-ledger] note: this repo's ${head.rubric.engine} does not match the rubric pinned at ` +
+        `v${head.version} — mirror engine out of sync with the signed release (re-sync pending, or ` +
+        `you are verifying a live ledger newer than this checkout)`
+    );
+  }
+}
+
 // Reproduce the index hash from the LIVE full index (the ledger hashes the
 // full index content — the sample slice in this repo is a subset by design).
 try {

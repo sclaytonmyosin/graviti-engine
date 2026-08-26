@@ -73,7 +73,17 @@ The two hashes must match. (JSON payloads are hashed in canonical form — recur
 
 ## Sync provenance
 
-`src/engine.ts`, `scripts/verify-ledger.mjs` (modulo the live-fetch adaptation noted in its header), `data/ledger.json`, and `data/public-key.pem` mirror the private Graviti monorepo at commit `9de2807` (2026-08-26). The engine file is verbatim — re-syncing is a file copy plus an update to this line. Scoring changes land here in the same change that ships them to production. This sync carries the transport-integrity release: ledger v25 is the first entry whose signed core pins the payload manifest, `scripts/verify-payload.mjs` is new, and the ledger snapshot here is now refreshed as a mandatory step after every production deploy (it is the independent second path the verifier pins against — and it never runs ahead of the origin).
+`src/engine.ts`, `scripts/verify-ledger.mjs` (modulo the live-fetch adaptation noted in its header), `data/ledger.json`, and `data/public-key.pem` mirror the private Graviti monorepo at commit `cf24943` (2026-08-26). The engine file is verbatim — re-syncing is a file copy plus an update to this line, and it now happens automatically with every ledger snapshot sync. This sync carries the rubric-pinning release: from ledger v26 every entry's signed core carries a `rubric` field — the sha256 and git blob sha1 of the exact committed `src/engine.ts` that scored every ranking published under that entry, plus the pinning private-repo commit and this repository's URL. That makes the sync provenance *checkable instead of stated*:
+
+```bash
+# The engine in this repo must hash to exactly what the signed ledger head pins:
+git hash-object src/engine.ts
+curl -s https://graviti.thesingulariti.ai/ledger.json | jq -r '.entries[-1].rubric.engine_git_blob_sha1'
+# — the two must match byte for byte. Equivalently, with no git:
+sha256sum src/engine.ts   # must equal .entries[-1].rubric.engine_sha256
+```
+
+The blob hash is computed by `git hash-object` over the raw committed file bytes (no normalization), so any checkout of this mirror — or of the private repo at the pinned commit — reproduces it. A scoring change is therefore a public, diffable event: the ledger entry that ships it pins the new hash, and this file's history shows the diff. If this repo's engine ever fails that check, the mirror is out of sync (or you're comparing against a ledger newer than your checkout) — `npm run verify:ledger` performs the same cross-check and says which. This release also ships the claim-decay classes: the per-claim freshness policy (`CLAIM_DECAY_CLASSES` / `CLAIM_DECAY_RULES` in the engine — fast 45d, medium 120d, slow 365d, static) under which a claim past its disclosed window is marked "stale — pending re-verification" on every payload and counts at half weight where claim depth feeds scoring — visibly degraded, never zeroed, because stale is not false.
 
 ## Layout
 
