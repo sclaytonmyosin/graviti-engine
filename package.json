@@ -12,6 +12,7 @@
   "scripts": {
     "demo": "tsx demo/run.ts",
     "verify:ledger": "node scripts/verify-ledger.mjs",
+    "verify:payload": "node scripts/verify-payload.mjs",
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {

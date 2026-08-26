@@ -42,9 +42,38 @@ npm run verify:ledger -- --live # fetches and verifies the current live ledger i
 
 The script needs no secrets and no Graviti-run infrastructure: it recomputes every entry hash, walks the chain back to genesis, and checks every signature against the public key. Bitcoin anchors can be independently replayed with the open-source OpenTimestamps client against proofs at `/ots/v<N>.ots` — instructions in [llms.txt](https://graviti.thesingulariti.ai/llms.txt).
 
+## Verify what you received — transport integrity
+
+The ledger proves what was *published*. It cannot see the pipe: TLS-terminating proxies, CDNs, caches, and load balancers sit between Graviti's origin and your process, and any of them could alter a payload with no ledger entry capturing the delta. From ledger v25, every entry's signed core pins a sha256 manifest of every published payload (`files.artifacts`), so the check moves to your side of the pipe. **Verify before trust:**
+
+```bash
+npm run verify:payload                                             # /index-full.json
+npm run verify:payload -- /index.json /data/categories/magnesium-supplements.json /llms.txt
+```
+
+`scripts/verify-payload.mjs` is dependency-free (Node ≥ 20) and exits nonzero on any failure. It:
+
+1. fetches the ledger from **two independent paths** — this repo's snapshot on raw.githubusercontent.com and the origin's `/ledger.json` — verifies both chains, and cross-checks the heads (a fork or an origin serving an older ledger than the public mirror fails loudly);
+2. verifies every Ed25519 signature against the **pinned** signing key embedded in the script — the served `/public-key.pem` is cross-checked against the pin and a mismatch is a failure, never a source of trust;
+3. recomputes the sha256 of the payload you actually received and compares it to the head entry's signed manifest;
+4. guards against replay: a payload that matches an **older** entry's manifest instead of the head is stale-but-validly-signed — reported as its own failure, because a replayed yesterday is the subtle attack.
+
+No Node? The core check is two commands with `curl`, `jq`, and `sha256sum` — expected hash from the mirror snapshot (independent path), actual hash from the bytes that reached you:
+
+```bash
+curl -s https://raw.githubusercontent.com/sclaytonmyosin/graviti-engine/main/data/ledger.json \
+  | jq -r '.entries[-1].files.artifacts["/index-full.json"]'
+curl -s https://graviti.thesingulariti.ai/index-full.json \
+  | jq -cjS 'del(.generated_at, .integrity)' | sha256sum
+```
+
+The two hashes must match. (JSON payloads are hashed in canonical form — recursively sorted keys, no whitespace — after deleting the two volatile envelope fields `generated_at` and `integrity`, which carry the build timestamp and the pinning entry's own hash and so cannot be inside the pinned content. `/llms.txt` is hashed as exact bytes, no `jq` step.) For the full guarantee, also confirm the mirror and origin ledgers agree and the signature chain verifies — that's steps 1–2 above, or `npm run verify:ledger`.
+
+**The boundary, honestly:** a passing check proves the bytes that reached the edge of your process match Graviti's signed, Bitcoin-anchored record. Nothing cryptographic reaches *inside* your runtime or a model's context window after verification passes — if your own stack mutates the data afterwards, no publisher-side mechanism can see it. Verify as close to the point of use as you can; the last hop is yours.
+
 ## Sync provenance
 
-`src/engine.ts`, `scripts/verify-ledger.mjs` (modulo the live-fetch adaptation noted in its header), `data/ledger.json`, and `data/public-key.pem` mirror the private Graviti monorepo at commit `b36f58f` (2026-08-25). The engine file is verbatim — re-syncing is a file copy plus an update to this line. Scoring changes land here in the same change that ships them to production; this sync carries the evidence-states gate (`evidenceState()`): brands with zero captured claims are listed in landscapes as "not yet evidenced" but are never scored and never recommended — run the demo to see both behaviors.
+`src/engine.ts`, `scripts/verify-ledger.mjs` (modulo the live-fetch adaptation noted in its header), `data/ledger.json`, and `data/public-key.pem` mirror the private Graviti monorepo at commit `9de2807` (2026-08-26). The engine file is verbatim — re-syncing is a file copy plus an update to this line. Scoring changes land here in the same change that ships them to production. This sync carries the transport-integrity release: ledger v25 is the first entry whose signed core pins the payload manifest, `scripts/verify-payload.mjs` is new, and the ledger snapshot here is now refreshed as a mandatory step after every production deploy (it is the independent second path the verifier pins against — and it never runs ahead of the origin).
 
 ## Layout
 
@@ -55,6 +84,7 @@ data/ledger.json         committed snapshot of the public integrity ledger
 data/public-key.pem      Ed25519 public key the ledger signatures verify against
 demo/run.ts              CLI demo — question in, ranked disclosure-carrying answer out
 scripts/verify-ledger.mjs  no-secrets ledger verification (chain, signatures, live index hash)
+scripts/verify-payload.mjs client-side transport-integrity check — pinned key, two ledger paths, replay guard
 ```
 
 ## License
