@@ -1,6 +1,24 @@
 # graviti-engine
 
-The deterministic scoring engine behind [Graviti](https://graviti.thesingulariti.ai) — trust infrastructure for agent-mediated commerce, built by Singulariti. This repository exists so the site's central claim ("scoring is open to audit") is checkable, not just stated: [`src/engine.ts`](src/engine.ts) here is the exact module that ranks every recommendation in production — the MCP server, the web console, and the public endpoints all import this one file. There is no private ranking path.
+The deterministic scoring engine behind [Graviti](https://graviti.thesingulariti.ai) — trust infrastructure for agent-mediated commerce, built by Singulariti. This repository exists so the site's central claim ("scoring is open to audit") is checkable, not just stated: [`src/engine.ts`](src/engine.ts) here is the exact module that ranks every recommendation in production — the MCP servers, the web console, and the public endpoints all import this one file. There is no private ranking path.
+
+## Use it from any agent — under a minute
+
+Graviti speaks MCP on two paths; both serve the same seven tools (`match_intent`, `get_verified_claims`, `category_landscape`, `get_accountability_log`, `get_ledger`, `get_gap_report`, `report_conversion`) through this exact engine.
+
+**Remote (fastest)** — hosted Streamable HTTP endpoint, no auth, no account:
+
+```json
+{ "mcpServers": { "graviti": { "url": "https://graviti.thesingulariti.ai/api/mcp" } } }
+```
+
+**Local** — the [`graviti-mcp`](https://www.npmjs.com/package/graviti-mcp) npm package over stdio:
+
+```json
+{ "mcpServers": { "graviti": { "command": "npx", "args": ["-y", "graviti-mcp"] } } }
+```
+
+The package ships an index snapshot and, on startup, pulls the latest published index and **verifies it against the signed ledger** — the pinned key, two independent ledger paths, and the replay guard are the same procedure as `scripts/verify-payload.mjs` below. A tampered or replayed payload is never used. (Claude Desktop: `claude_desktop_config.json`; Cursor: `.cursor/mcp.json`; wiring for other clients at [graviti.thesingulariti.ai/use-graviti](https://graviti.thesingulariti.ai/use-graviti).)
 
 ## The two laws
 
