@@ -11,6 +11,7 @@
   "homepage": "https://graviti.thesingulariti.ai",
   "scripts": {
     "demo": "tsx demo/run.ts",
+    "canary": "tsx scripts/canary-panel-a.ts",
     "verify:ledger": "node scripts/verify-ledger.mjs",
     "verify:payload": "node scripts/verify-payload.mjs",
     "typecheck": "tsc --noEmit"

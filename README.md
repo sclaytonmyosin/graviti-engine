@@ -49,6 +49,16 @@ npm run demo -- "best magnesium supplement" --json     # the full machine payloa
 
 The demo runs the engine over [`data/sample-index.json`](data/sample-index.json), a small real slice of the public index (five categories, ~100 brands, with claims, provenance URLs, and the accountability log). For the complete picture, fetch [index-full.json](https://graviti.thesingulariti.ai/index-full.json) and substitute it — the engine takes any `BrandIndex`.
 
+## Run the canaries
+
+```bash
+npm run canary
+```
+
+Graviti runs **canary-based drift detection**: subjects of known ground truth are pushed through the system on every production build (Panel A — golden routing queries, structural invariants like *no NaN score anywhere* and *catalog-tier brands never rank*, and adversarial cases where the famous answer must NOT win) and through the audit crawler on every cycle (Panel B — three provenance pages the site controls: one steady, one deliberately drifted, one deliberately gone). A Panel A divergence fails the build; a Panel B misread means the sensor itself is broken and that crawl cycle refreshes no real claims. The two panels are independently maintained so neither becomes the other's ground truth.
+
+[`scripts/canary-panel-a.ts`](scripts/canary-panel-a.ts) is the public subset of Panel A — the cases the sample index supports, over the exact engine this repository publishes, so you can run the same canaries the build runs with zero secrets. Live status for both panels is published in the `canaries` block of [pulse.json](https://graviti.thesingulariti.ai/pulse.json) (human-readable at [/pulse](https://graviti.thesingulariti.ai/pulse)).
+
 ## Verify the ledger
 
 The index's version history is a hash chain: each entry commits to the SHA-256 of the canonical full-index content and the previous entry's hash, is Ed25519-signed against the published public key ([`data/public-key.pem`](data/public-key.pem), also served at [/public-key.pem](https://graviti.thesingulariti.ai/public-key.pem)), and is anchored to Bitcoin via OpenTimestamps. Rewriting any historical entry breaks every hash after it — even Graviti cannot edit the record.
