@@ -220,14 +220,32 @@ export interface AccountabilityEntry {
    *  that cannot be cited), with the reason public.
    *  "gap_report_delivered": a paid-tier gap report was prepared and delivered
    *  to the brand — logged with payment status so the engagement itself is
-   *  publicly auditable. Findings and rank are never affected. */
+   *  publicly auditable. Findings and rank are never affected.
+   *
+   *  Roster events (selection transparency — who is in the index, who is not,
+   *  and why, on the public record; see docs/SELECTION.md):
+   *  "brand_added": a brand entered the index, with the lane/source of the
+   *  addition. Inclusion implies no relationship and buys nothing.
+   *  "brand_removed": a real brand removed from the index, reason public
+   *  (distinct from "retired", which covers fictional demonstration entries).
+   *  "brand_declined": a brand asked to be indexed and was not, reason public.
+   *  "brand_skipped": a brand was deliberately not indexed during category
+   *  coverage, reason public — the honest record of editorial omission. */
   event?:
     | "confirmation_request"
     | "confirmation_resolved"
     | "retired"
     | "demonstration_retained"
     | "claim_removed"
-    | "gap_report_delivered";
+    | "gap_report_delivered"
+    | "brand_added"
+    | "brand_removed"
+    | "brand_declined"
+    | "brand_skipped";
+  /** Roster events: the expansion lane or editorial source of the change
+   *  (e.g. "streaming expansion lane", "inbound brand request"). */
+  lane?: string;
+  source?: string;
   /** Entry concerns a labeled demonstration exhibit, not a real brand. */
   demo?: boolean;
 }
@@ -543,6 +561,24 @@ export const OUT_OF_SCOPE_MESSAGE =
   "This category isn't in Graviti's verified index yet. Graviti only answers from audited, provenance-backed " +
   "claims — it never guesses.";
 
+/** The seal is never a bare badge: every surface that renders a verification
+ *  status carries this scope block and a dereference to the signed ledger
+ *  entry the status resolves to. Honest limits, stated structurally. */
+export const SEAL_SCOPE = {
+  what_this_verifies:
+    "Record integrity (the entry is hash-chained, Ed25519-signed, and Bitcoin-anchored — history cannot be " +
+    "quietly rewritten), claim provenance (every claim cites the public source URL it was captured from), " +
+    "and freshness (claims are continuously re-crawled on disclosed decay windows; stale is marked visibly).",
+  what_this_does_not_verify:
+    "That the brand's claims were true when the brand wrote them, product quality, safety, efficacy, or " +
+    "outcomes. Capture is not endorsement; a coherent claim held at a stable URL passes every provenance " +
+    "check. The seal attests to the record and the process, never to the product.",
+  dereference:
+    "Every seal resolves to a signed ledger entry: the head entry of " +
+    "https://graviti.thesingulariti.ai/ledger.json pins (by sha256) the exact payloads this status was " +
+    "served in. Verify the chain, the signature, and the Bitcoin anchor per the instructions on /ledger.",
+} as const;
+
 export function disclosure(brands: Brand[], inIndex = true) {
   return {
     in_index: inIndex,
@@ -588,6 +624,7 @@ export function disclosure(brands: Brand[], inIndex = true) {
       ),
       policy: CLAIM_DECAY_POLICY,
     },
+    seal_scope: SEAL_SCOPE,
     info_quality_influences_ranking: false,
     specifications_policy:
       "Some entries carry a specifications block (ingredient/spec disclosure) with an info_quality score: " +
@@ -1083,7 +1120,9 @@ export function accountabilityLog(index: BrandIndex) {
       "Public, machine-readable log of every flag, degradation, revocation, and restoration. " +
       "Payment can fast-track a re-evaluation; it can never change what the re-evaluation finds. " +
       "Entries marked demo: true concern labeled demonstration exhibits — fictional brands retained " +
-      "to illustrate this lifecycle, never ranked, never recommended.",
+      "to illustrate this lifecycle, never ranked, never recommended. Roster changes are also logged " +
+      "per brand (brand_added with lane/source, brand_removed, brand_declined, brand_skipped — each " +
+      "with a public reason), so who is in the index, who is not, and why stays on the record.",
     disclosure: disclosure(index.categories.flatMap((c) => c.brands)),
   };
 }
