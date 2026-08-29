@@ -99,6 +99,17 @@ The two hashes must match. (JSON payloads are hashed in canonical form — recur
 
 **The boundary, honestly:** a passing check proves the bytes that reached the edge of your process match Graviti's signed, Bitcoin-anchored record. Nothing cryptographic reaches *inside* your runtime or a model's context window after verification passes — if your own stack mutates the data afterwards, no publisher-side mechanism can see it. Verify as close to the point of use as you can; the last hop is yours.
 
+## Verify Graviti traffic — outbound attribution (for brands)
+
+Every recommendation link Graviti produces to a brand's own site carries deterministic UTMs (`utm_source=graviti`, `utm_medium=<surface: agent|console|scan|landscape|report>`, `utm_campaign=<category>`, `utm_content=<brand>`) plus a signed `gvt` token, so the brand on the receiving end can *prove* the referral came from Graviti instead of trusting a spoofable UTM string. The token (`gvt1.<surface>.<category>.<brand>.<YYYYMMDD>.<sig>`) is Ed25519-signed with the same key that signs the ledger, and identifies the recommendation **surface, never the user** — no user identifiers, no click IDs, no per-click values. Full spec: [`docs/ATTRIBUTION.md`](docs/ATTRIBUTION.md).
+
+```bash
+node scripts/verify-attribution.mjs 'gvt1.agent.magnesium-supplements.bioptimizers.20260829.<sig>'
+# or paste the full landing URL — the script extracts the gvt parameter
+```
+
+Dependency-free (Node ≥ 20), pinned key, exit 0 only on a valid signature. The equivalent openssl commands are in the spec.
+
 ## Sync provenance
 
 `src/engine.ts`, `scripts/verify-ledger.mjs` (modulo the live-fetch adaptation noted in its header), `data/ledger.json`, and `data/public-key.pem` mirror the private Graviti monorepo at commit `cf24943` (2026-08-26). The engine file is verbatim — re-syncing is a file copy plus an update to this line, and it now happens automatically with every ledger snapshot sync. This sync carries the rubric-pinning release: from ledger v26 every entry's signed core carries a `rubric` field — the sha256 and git blob sha1 of the exact committed `src/engine.ts` that scored every ranking published under that entry, plus the pinning private-repo commit and this repository's URL. That makes the sync provenance *checkable instead of stated*:
@@ -123,6 +134,9 @@ data/public-key.pem      Ed25519 public key the ledger signatures verify against
 demo/run.ts              CLI demo — question in, ranked disclosure-carrying answer out
 scripts/verify-ledger.mjs  no-secrets ledger verification (chain, signatures, live index hash)
 scripts/verify-payload.mjs client-side transport-integrity check — pinned key, two ledger paths, replay guard
+src/attribution.ts       shared outbound-attribution module (UTM scheme, gvt token format, pinned key)
+scripts/verify-attribution.mjs  brand-side gvt token verifier — prove a referral came from Graviti
+docs/ATTRIBUTION.md      the attribution spec: scheme, token format, signing model, privacy stance
 ```
 
 ## License
